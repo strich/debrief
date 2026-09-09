@@ -1,0 +1,121 @@
+{
+  "_comment": "Content for /uses. Edit this file rather than the page component — the AI half of this list turns over fast. Tags: free | paid | open-source | self-hosted | favourite.",
+  "groups": [
+    {
+      "id": "ai-coding",
+      "name": "AI coding",
+      "note": "The part of this list that changes fastest. Treat anything here as current only as of the newest entry on the now page.",
+      "items": [
+        {
+          "name": "Claude Code",
+          "description": "Agentic coding in the terminal. Main harness for anything touching a real repo.",
+          "href": "https://claude.com/claude-code",
+          "tags": ["paid", "favourite"]
+        },
+        {
+          "name": "OpenCode",
+          "description": "CLI coding harness. What the autonomous ticket loop drives.",
+          "href": "https://github.com/sst/opencode",
+          "tags": ["open-source"]
+        },
+        {
+          "name": "Cursor",
+          "description": "Editor-native completion and inline edits for smaller, local changes.",
+          "href": "https://cursor.com",
+          "tags": ["paid"]
+        }
+      ]
+    },
+    {
+      "id": "game-dev",
+      "name": "Game development",
+      "items": [
+        {
+          "name": "Unity",
+          "description": "The engine the day job is built on.",
+          "href": "https://unity.com",
+          "tags": ["paid"]
+        },
+        {
+          "name": "JetBrains Rider",
+          "description": "C# IDE. Still the best debugger story for Unity.",
+          "href": "https://www.jetbrains.com/rider/",
+          "tags": ["paid", "favourite"]
+        }
+      ]
+    },
+    {
+      "id": "version-control",
+      "name": "Version control",
+      "note": "Most of the handbook's version-control section is about making these two behave on a repo full of binary assets.",
+      "items": [
+        {
+          "name": "Git",
+          "description": "With LFS, and with the large-repo tuning from the 2014 post still largely intact.",
+          "href": "https://git-scm.com",
+          "tags": ["free", "open-source"]
+        },
+        {
+          "name": "Git LFS",
+          "description": "For art and other binary assets. Necessary, not sufficient.",
+          "href": "https://git-lfs.com",
+          "tags": ["free", "open-source"]
+        }
+      ]
+    },
+    {
+      "id": "infrastructure",
+      "name": "Infrastructure",
+      "items": [
+        {
+          "name": "GitHub Actions",
+          "description": "CI, PR automation, and where the review bot runs.",
+          "href": "https://github.com/features/actions",
+          "tags": ["paid"]
+        },
+        {
+          "name": "Linear",
+          "description": "Ticket queue. Also the input to the autonomous loop.",
+          "href": "https://linear.app",
+          "tags": ["paid"]
+        },
+        {
+          "name": "Sentry",
+          "description": "Error tracking. Feeds ticket-and-PR triage.",
+          "href": "https://sentry.io",
+          "tags": ["paid"]
+        },
+        {
+          "name": "Cloudflare Pages",
+          "description": "Where this site is built and served from.",
+          "href": "https://pages.cloudflare.com",
+          "tags": ["free"]
+        }
+      ]
+    },
+    {
+      "id": "this-site",
+      "name": "This site",
+      "items": [
+        {
+          "name": "Astro",
+          "description": "Static build for the blog, the handbook and everything else.",
+          "href": "https://astro.build",
+          "tags": ["free", "open-source", "favourite"]
+        },
+        {
+          "name": "Starlight",
+          "description": "Docs framework behind /handbook — sidebar, pagination and search.",
+          "href": "https://starlight.astro.build",
+          "tags": ["free", "open-source"]
+        },
+        {
+          "name": "Pagefind",
+          "description": "Static search index covering the blog and the handbook together.",
+          "href": "https://pagefind.app",
+          "tags": ["free", "open-source"]
+        }
+      ]
+    }
+  ]
+}
