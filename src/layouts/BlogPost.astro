@@ -48,11 +48,6 @@ const formatted = pubDate.toLocaleDateString('en-AU', { year: 'numeric', month: 
         <div class="post-body">
           <slot />
         </div>
-        {originalPath && (
-          <p class="provenance">
-            Originally published at <code>{originalPath}</code> on the old WordPress site — same URL, migrated in place.
-          </p>
-        )}
       </article>
     </main>
     <footer class="site-footer">
@@ -131,14 +126,6 @@ const formatted = pubDate.toLocaleDateString('en-AU', { year: 'numeric', month: 
         padding: 1rem;
         border-radius: 6px;
         overflow-x: auto;
-      }
-      .provenance {
-        margin-top: 3rem;
-        padding-top: 1rem;
-        border-top: 1px solid var(--rule);
-        font-family: ui-monospace, monospace;
-        font-size: 0.8rem;
-        color: var(--ink-2);
       }
       .site-footer {
         max-width: 720px;

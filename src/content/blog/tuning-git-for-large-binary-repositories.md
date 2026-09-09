@@ -8,7 +8,7 @@ Git isn't particularly well suited for video game repositories where you want to
 Until a 64bit build is released for Windows one can make the following changes to ensure Git doesn't hit the 32bit memory limit.
 In **.git/config** add the following:
 
-```
+```ini
 [core]
   packedGitLimit = 512m
   packedGitWindowSize = 512m
@@ -21,7 +21,7 @@ In **.git/config** add the following:
 
 In **.git/info/gitattributes** we will set a number of file extensions to binary and remove the delta diff functionality from them:
 
-```
+```text
 *.jpg binary -delta
 *.ogg binary -delta
 *.png binary -delta

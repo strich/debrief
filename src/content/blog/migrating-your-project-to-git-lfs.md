@@ -11,7 +11,7 @@ For the past few months I've been looking into migrating our giant repo into Git
 
 First thing we need to do is mirror the remote repository so we can perform the LFS migration before pushing back up to our new remote (GitHub). Doing this is quite simple:
 
-```
+```bash
 git clone --mirror git@bitbucket.org:subtgames/war-for-the-overworld.git
 ```
 
@@ -22,7 +22,7 @@ git clone --mirror git@bitbucket.org:subtgames/war-for-the-overworld.git
 Okay. Now for the serious business and to explain a few things. What I'm doing here is a *deep migration* to LFS. What this means is that I am walking through every single commit in the entire Git history and replacing every single binary file I've identified with its LFS representation and uploading that file to our remote host. This kind of solution works best if you're also going to be pushing the resulting repo to a new location (Even on the same host). If you want to simply rewrite a few files into LFS for a pre-existing hosted repo then you may be best using the official [Git LFS Migrate tool and tutorial](https://github.com/git-lfs/git-lfs/wiki/Tutorial#migrating-existing-repository-data-to-lfs).
 In this case we need to make use of some fairly dark magic made easy thanks to [this tool](https://github.com/bozaro/git-lfs-migrate). Once downloaded, it is run like so:
 
-```
+```powershell
 java -jar git-lfs-migrate.jar `
 -s war-for-the-overworld.git `
 -d converted/war-for-the-overworld.git `
@@ -88,7 +88,7 @@ This will kick-off the very long process of walking Git history, rewriting files
 The final part - Pushing to the remote host! This *should*be the easiest part, but it wasn't for us...
 First things first, lets clean up the mirror before we push it:
 
-```
+```bash
 cd converted/war-for-the-overworld.git/
 git gc
 ```
@@ -96,7 +96,7 @@ git gc
 Running a git gc  will cause git to remove any loose files and garbage as well as compress all the file blobs. This might take awhile...
 Once done, you simply run the below command to upload it to the remote host:
 
-```
+```bash
 git push --mirror https://USERNAME:PASSWORD@github.com/BrightrockGames/war-for-the-overworld.git
 ```
 

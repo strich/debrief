@@ -21,6 +21,13 @@ export default defineConfig({
       },
       lastUpdated: true,
       pagination: true,
+      // Everforest: a green-toned pair that matches the site's own
+      // accent color, applies to code blocks in the blog too (Expressive
+      // Code, bundled with Starlight, hooks into Astro's markdown
+      // pipeline site-wide, not just the docs collection).
+      expressiveCode: {
+        themes: ['everforest-light', 'everforest-dark'],
+      },
       // The handbook lives one level deep at src/content/docs/handbook/,
       // which is what makes it serve at /handbook/... without touching
       // Astro's `base` option (that option is project-wide and would also

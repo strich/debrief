@@ -10,10 +10,10 @@ Unfortunately Ubuntu 12.04 does not have any packages for Mono3, so we must comp
 
 First, we need to install all the dependencies we will need.
 
-```
+```bash
 sudo apt-get install git autoconf automake libtool g++ gettext mono-gmcs
 sudo apt-get install libglib2.0-dev libpng12-dev libx11-dev
-sudo apt-get install libfreetype6-dev libfontconfig1-dev&nbsp;libcairo2-dev
+sudo apt-get install libfreetype6-dev libfontconfig1-dev libcairo2-dev
 sudo apt-get install libtiff4-dev libjpeg8-dev libgif-dev libexif-dev
 ```
 
@@ -21,13 +21,13 @@ sudo apt-get install libtiff4-dev libjpeg8-dev libgif-dev libexif-dev
 
 Now, lets get all the code we will need. The Mono project has all of their source code on their GitHub account. You want to create a folder in /opt or your home folder to contain your working source code repositories. Clone the repositories while inside this folder.
 
-```
+```bash
 git clone git://github.com/mono/mono.git
 ```
 
 libgdiplus is needed by Mono:
 
-```
+```bash
 git clone git://github.com/mono/libgdiplus.git
 ```
 
@@ -35,14 +35,14 @@ git clone git://github.com/mono/libgdiplus.git
 
 Navigate to the root folder of the **libgdiplus** repository you cloned previously, and then run the following commands.
 
-```
+```bash
 ./autogen.sh --prefix=/usr/local
 ```
 
 This will configure the compilation process and ensure your computer has all the proper libraries and dependencies installed. If you ran everything above, you should be good to go. If it fails on an error and indicates you are missing a libary or package, you may need to install a development version of that package, and then try to run the command again.
 Once this completes successfully and you see the words Now type 'make' to compile, you can run the following commands.
 
-```
+```bash
 make
 sudo make install-strip
 ```
@@ -53,33 +53,33 @@ make will compile the package, and sudo make install will install it into your s
 
 First you need to get all the submodules for Mono:
 
-```
+```bash
 git submodule init
 git submodule update --recursive
 ```
 
 Now navigate to the directory where you cloned the Mono source code. Run the compilation setup script similar to the previous step.
 
-```
+```bash
 ./autogen.sh --prefix=/usr/local
 ```
 
 Once this completes successfully and you should again see the words Now type 'make' to compile. This article assumes you do not already have Mono installed. You must first make monolite, which is then used to build the full Mono.
 
-```
+```bash
 make get-monolite-latest
 ```
 
 Now you can build Mono:
 
-```
+```bash
 make EXTERNAL_MCS=${PWD}/mcs/class/lib/monolite/gmcs.exe
 ```
 
 If you already have a working Mono installation, or you want to update it you can just run regular make without having to build monolite.
 Now you can install it:
 
-```
+```bash
 sudo make install
 ```
 

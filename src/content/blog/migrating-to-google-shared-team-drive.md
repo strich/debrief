@@ -14,7 +14,7 @@ So what now? We turn to code! The below Google Script will copy all files and fo
 
 Unfortunately it is still not perfect - [Google Scripts](https://script.google.com) have a bunch of quotas limiting them such as daily executions and total Drive operations allowed. So this script will have to be run repeatedly over possibly a week. But at least it should do it perfectly, eventually. :/
 
-```
+```javascript
 var _cache = CacheService.getUserCache();
 
 function start() {

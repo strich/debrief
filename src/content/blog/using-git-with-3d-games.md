@@ -19,7 +19,7 @@ This is really personal preference here as there are quite a few options in term
 
 Place the following into a .gitignore file within your Unity project folder.
 
-```
+```ini
 # =============== #
 # Unity generated #
 # =============== #

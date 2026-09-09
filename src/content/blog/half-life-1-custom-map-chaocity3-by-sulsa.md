@@ -16,7 +16,7 @@ Note that this map was made for Half-Life 1 GoldSource (NOT the newer "Source" v
 
 ## Author's Notes
 
-```
+```text
 ---
 CHAOCITY 3.0
 

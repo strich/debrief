@@ -10,7 +10,7 @@ To improve our workflow I have created a git alias that performs a git stash -> 
 [![](/assets/blog/using-git-sync-to-automate-common-git-commands/powershell_2018-03-15_18-02-01.png)](/assets/blog/using-git-sync-to-automate-common-git-commands/powershell_2018-03-15_18-02-01.png)
 On a command-line paste in the following to create a global git alias:
 
-```
+```bash
 git config --global alias.sync '!f() { bold=$(tput bold); normal=$(tput sgr0); changes=false; if [[ `git status --porcelain` ]]; then changes=true; echo \"${bold}Changes detected, stashing...${normal}\"; git stash save --include-untracked; else echo \"${bold}No local changes, skipping stash${normal}\"; fi; echo \"${bold}Rebasing and pushing...${normal}\"; git pull --rebase && git push; if [ \"$changes\" = true ] ; then echo \"${bold}Unstashing changes...${normal}\"; git stash pop --quiet; fi; }; f'
 ```
 
@@ -18,7 +18,7 @@ That's it.
 
 For reference here is the non-minified script code:
 
-```
+```bash
 bold=$(tput bold);
 normal=$(tput sgr0);
 changes=false;

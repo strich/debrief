@@ -23,7 +23,7 @@ The requirements:
 [![Untitled-1](/assets/blog/creating-a-cutout-shader-for-doors-and-windows/Untitled-1.png)](/assets/blog/creating-a-cutout-shader-for-doors-and-windows/Untitled-1.png)
 I find it easier to work backwards. So let's take a look at the shader code first:
 
-```
+```hlsl
 inline void CutoutMaskClipper(float3 posWorld, float2 uv) {
 	float alphaCutoff		= 0.5;
 	float2 localPixelPos	= mul(unity_WorldToObject, posWorld).xy;
@@ -40,7 +40,7 @@ inline void CutoutMaskClipper(float3 posWorld, float2 uv) {
 The aim here is to figure out where the mask is in relation to the pixel we're rendering and then compare it against the right pixel in the mask (If it is in the mask) and clip it or not. Hopefully it is pretty self-explanatory. In my case I've duplicated the last 4 lines multiple times to allow multiple masks to stack on a single mesh.
 In my custom Unity 5 standard shader I have overridden the frag function of both the forward and deferred passes:
 
-```
+```hlsl
 void fragDeferredCustom(
 	VertexOutputDeferred i,
 	out half4 outDiffuse : SV_Target0,			// RT0: diffuse color (rgb), occlusion (a)
@@ -64,7 +64,7 @@ half4 fragBaseCustom(VertexOutputForwardBase i) : SV_Target {
 
 Annoyingly, getting the shadows to work requires a little extra effort as the Unity 5 standard shader avoids including the pixel world position by default. So I had to copy **UnityStandardShadow.cginc** modify a few things to make it work:
 
-```
+```hlsl
 struct VertexOutputShadowCaster
 {
 	V2F_SHADOW_CASTER_NOPOS
@@ -75,7 +75,7 @@ struct VertexOutputShadowCaster
 };
 ```
 
-```
+```hlsl
 void vertShadowCaster (VertexInput v,
 	#ifdef UNITY_STANDARD_USE_SHADOW_OUTPUT_STRUCT
 	out VertexOutputShadowCaster o,
@@ -96,7 +96,7 @@ void vertShadowCaster (VertexInput v,
 
 Finally in my custom standard shader:
 
-```
+```hlsl
 half4 fragShadowCasterCustom(
 	#ifdef UNITY_STANDARD_USE_SHADOW_OUTPUT_STRUCT
 		VertexOutputShadowCaster i
@@ -124,7 +124,7 @@ half4 fragShadowCasterCustom(
 
 Now that the shader is prepared, we simply need to provide it with the data it needs. This took a bit of work as we need to apply a number of transform steps to ensure the target object and mask position are aligned, scaled correctly and within the same transform space:
 
-```
+```csharp
 public List<GameObject> AffectedObjects;
 public GameObject TargetCutLocation;
 private Vector2 _targetCutOffset = new Vector2(0.5f, 0.0f);
