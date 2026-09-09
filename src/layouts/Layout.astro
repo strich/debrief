@@ -1,0 +1,177 @@
+---
+/*
+ * The shell for every non-handbook page: home, /blog/*, /projects/*, /uses,
+ * /now, 404.
+ *
+ * Replaces the two hand-rolled documents this site used to have (index.astro
+ * and BlogPost.astro each carried their own <html>, their own <head> and
+ * their own ~120-line inline <style> block, which had already drifted apart).
+ * Everything visual now comes from src/styles/site.css and the token layer
+ * that Starlight also reads, so the blog and the handbook cannot drift again.
+ *
+ * PAGEFIND GOTCHA — do not remove `data-pagefind-body` from the <main>
+ * below. Starlight stamps that attribute on its own pages, and once it
+ * exists anywhere on a site Pagefind indexes ONLY elements that carry it.
+ * Without it here, every custom page silently vanishes from site search
+ * while the handbook keeps working, so the breakage is easy to miss.
+ */
+import '../styles/site.css';
+import { SITE } from '../site.config';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import type { Crumb } from '../types';
+import BackToTop from '../components/BackToTop.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Omit the breadcrumb strip (the home page has nothing to trace). */
+  crumbs?: Crumb[];
+  /** Constrain content to the reading measure. Off for wide card grids. */
+  prose?: boolean;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  /** Path used for the canonical URL; defaults to the current one. */
+  canonicalPath?: string;
+}
+
+const {
+  title,
+  description = SITE.description,
+  crumbs,
+  prose = true,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  canonicalPath,
+} = Astro.props;
+
+const pageTitle = title ? `${title} — ${SITE.title}` : `${SITE.title} — ${SITE.tagline}`;
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, Astro.site ?? SITE.href);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title ?? SITE.title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={SITE.title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
+
+    {/* The two variable fonts used on first paint. */}
+    <link
+      rel="preload"
+      href="/fonts/DMSans-latin[wght].woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    {/*
+      Inline and un-deferred on purpose: this resolves the stored theme before
+      first paint so there is no light flash on a dark-mode load. It reads the
+      same `starlight-theme` key Starlight's own ThemeProvider uses, which is
+      what keeps the preference shared across the whole site.
+    */}
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem('starlight-theme');
+          const pref = ['auto', 'light', 'dark'].includes(stored) ? stored : 'auto';
+          document.documentElement.dataset.theme =
+            pref === 'auto'
+              ? window.matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark'
+              : pref;
+        } catch {
+          document.documentElement.dataset.theme = 'dark';
+        }
+      })();
+    </script>
+
+    <slot name="head" />
+  </head>
+
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <div class="page">
+      <div class="sticky-bar">
+        <SiteHeader />
+      </div>
+
+      {crumbs && crumbs.length > 0 && <Breadcrumbs items={crumbs} />}
+
+      <main id="main" class:list={['page-main', prose && 'measured']} data-pagefind-body>
+        <slot />
+      </main>
+
+      <BackToTop />
+      <SiteFooter />
+    </div>
+  </body>
+</html>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    padding-inline: var(--space-s);
+    margin-inline: auto;
+    /* Wide enough for card grids; prose is narrowed again by .measured. */
+    max-inline-size: 68rem;
+  }
+
+  .sticky-bar {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 30;
+    background-color: color-mix(in oklab, var(--background) 88%, transparent);
+    backdrop-filter: blur(var(--blur-sm));
+  }
+
+  .page-main {
+    flex: 1;
+    padding-block: var(--space-l) var(--space-xl);
+  }
+
+  .page-main.measured {
+    inline-size: 100%;
+    max-inline-size: var(--measure);
+    margin-inline: auto;
+  }
+
+  .skip-link {
+    position: absolute;
+    inset-block-start: var(--space-2xs);
+    inset-inline-start: var(--space-2xs);
+    z-index: 40;
+    padding: var(--space-2xs) var(--space-xs);
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-size: var(--step--1);
+    text-decoration: none;
+    transform: translateY(-200%);
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+</style>

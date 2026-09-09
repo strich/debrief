@@ -21,6 +21,14 @@ export default defineConfig({
       },
       lastUpdated: true,
       pagination: true,
+      // Starlight ships its own /404 rendered in the docs layout. The site
+      // has one at src/pages/404.astro instead, which uses the shared shell
+      // and points a lost reader at the blog archive as well as the
+      // handbook — most 404s here will be stale links to the 17 old
+      // WordPress post URLs, not to handbook pages. Two routes claiming
+      // /404 is currently an Astro warning and a hard error in a future
+      // version, so Starlight's is switched off rather than left to race.
+      disable404Route: true,
       // Everforest: a green-toned pair that matches the site's own
       // accent color, applies to code blocks in the blog too (Expressive
       // Code, bundled with Starlight, hooks into Astro's markdown
@@ -62,7 +70,21 @@ export default defineConfig({
           items: [{ autogenerate: { directory: 'handbook/people-and-practice' } }],
         },
       ],
-      customCss: ['./src/styles/custom.css'],
+      customCss: ['./src/styles/starlight.css'],
+      // Three low-level component overrides, which is all it takes to make
+      // the handbook read as part of the same site:
+      //   SiteTitle — the wordmark, matched to src/components/SiteHeader
+      //   PageTitle — adds the stub/working/settled maturity badge
+      //   Footer    — keeps Starlight's edit link, last-updated and
+      //               pagination, then appends the shared site footer
+      // Starlight's own docs warn against overriding the high-level layout
+      // components (PageFrame, TwoColumnContent) and we deliberately don't:
+      // the handbook's three-column layout, sidebar and search are all stock.
+      components: {
+        SiteTitle: './src/components/starlight/SiteTitle.astro',
+        PageTitle: './src/components/starlight/PageTitle.astro',
+        Footer: './src/components/starlight/Footer.astro',
+      },
     }),
     mdx(),
     sitemap(),

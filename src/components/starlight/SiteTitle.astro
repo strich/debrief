@@ -1,0 +1,39 @@
+---
+/*
+ * Starlight override: SiteTitle.
+ *
+ * Matches the wordmark in src/components/SiteHeader.astro so the header
+ * doesn't visibly change weight, size or colour when a reader crosses from
+ * the blog into the handbook. Starlight's default renders it in the accent
+ * colour at h4 size and semibold; the site wordmark is foreground-coloured
+ * at --step-1 and turns primary on hover.
+ *
+ * Logo support is dropped on purpose: this site has no logo image, and
+ * carrying the branch for one would mean keeping Starlight's
+ * virtual:starlight/user-images import in sync for no benefit.
+ */
+const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
+---
+
+<a href={siteTitleHref} class="site-title" translate="no">{siteTitle}</a>
+
+<style>
+  .site-title {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--foreground);
+    font-size: var(--step-1);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color var(--motion-duration-fast) var(--motion-ease);
+  }
+
+  .site-title:hover {
+    color: var(--primary);
+  }
+</style>

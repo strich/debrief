@@ -1,0 +1,56 @@
+---
+/*
+ * Starlight override: PageTitle.
+ *
+ * Adds the handbook's maturity badge under the <h1>. The `status` field
+ * (stub / working / settled) is Debrief's own extension to Starlight's docs
+ * schema — see src/content.config.ts — and until now nothing rendered it, so
+ * the signal existed in frontmatter and never reached a reader.
+ *
+ * It matters most for a handbook that is deliberately published early: the
+ * badge is how someone knows whether a page is a placeholder or something to
+ * act on. It shares one visual scale with the blog's post stages (see
+ * src/types.ts and src/styles/stage.css) so the two read as the same signal.
+ *
+ * The h1 keeps `id="_top"` — Starlight's "skip to content" target and its own
+ * scroll anchoring both depend on it, and the docs call this out explicitly
+ * as a requirement for overriding this component.
+ *
+ * The id is spelled literally rather than imported from Starlight's
+ * PAGE_TITLE_ID: `@astrojs/starlight/constants` is not in the package's
+ * `exports` map, so importing it fails the Vite build. The docs specify the
+ * value as `_top`, so that's the stable contract to code against.
+ */
+import StageBadge from '../StageBadge.astro';
+
+const PAGE_TITLE_ID = '_top';
+
+const { entry } = Astro.locals.starlightRoute;
+const status = (entry.data as { status?: string }).status;
+---
+
+<div class="page-title-block">
+  <h1 id={PAGE_TITLE_ID}>{entry.data.title}</h1>
+  {status && <StageBadge value={status} />}
+</div>
+
+<style>
+  .page-title-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2xs);
+    margin-block-start: 1rem;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--sl-text-h1);
+    line-height: var(--sl-line-height-headings);
+    /* Medium rather than Starlight's 600 — see the note in starlight.css
+       about why the lighter heading weight is load-bearing for this design. */
+    font-weight: var(--font-weight-medium);
+    color: var(--sl-color-white);
+    text-wrap: balance;
+  }
+</style>

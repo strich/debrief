@@ -1,0 +1,189 @@
+---
+/*
+ * Sticky site header for the custom pages.
+ *
+ * Mirrors Myscholar's menu bar: wordmark on the left, nav + theme control on
+ * the right, translucent-over-blur once it sticks. The same markup is fed to
+ * Starlight through src/components/starlight/SiteTitle.astro, so the two
+ * halves of the site present the same chrome.
+ *
+ * Nav collapses to a disclosure on narrow screens rather than a JS drawer —
+ * a <details> element needs no script and cannot get stuck open if JS fails.
+ */
+import { NAV_LINKS, SITE } from '../site.config';
+import Icon from './Icon.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname;
+
+/** A nav item is current when it is the path or a parent of it. */
+const isCurrent = (href: string) => {
+  const clean = href.replace(/\/$/, '');
+  return path === href || path === clean || path.startsWith(`${clean}/`);
+};
+---
+
+<header class="site-header" data-bar>
+  <a href="/" class="wordmark">{SITE.title}</a>
+
+  <div class="header-actions">
+    <nav class="desktop-nav" aria-label="Site">
+      {
+        NAV_LINKS.map((item) => (
+          <a
+            href={item.href}
+            class:list={['nav-link', isCurrent(item.href) && 'nav-current']}
+            aria-current={isCurrent(item.href) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <details class="mobile-nav">
+      <summary data-icon-button aria-label="Open menu">
+        <Icon name="menu" class="menu-open" />
+        <Icon name="close" class="menu-close" />
+      </summary>
+      <nav aria-label="Site">
+        {
+          NAV_LINKS.map((item) => (
+            <a
+              href={item.href}
+              class:list={[isCurrent(item.href) && 'nav-current']}
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </details>
+
+    <ThemeToggle />
+  </div>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s);
+    min-height: var(--control-size);
+    padding-block: var(--space-3xs);
+  }
+
+  .wordmark {
+    color: var(--foreground);
+    font-size: var(--step-1);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  .wordmark:hover {
+    color: var(--primary);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3xs);
+  }
+
+  .desktop-nav {
+    display: none;
+    align-items: center;
+    gap: var(--space-3xs);
+    font-size: var(--step--1);
+  }
+
+  @media (width >= 48rem) {
+    .desktop-nav {
+      display: flex;
+    }
+
+    .mobile-nav {
+      display: none;
+    }
+  }
+
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: var(--space-2xs);
+    color: var(--muted-foreground);
+    text-decoration: none;
+    transition: color var(--motion-duration-fast) var(--motion-ease);
+  }
+
+  .nav-link:hover {
+    color: var(--accent);
+  }
+
+  .nav-current {
+    color: var(--foreground);
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* The current-page dot, matched in the handbook sidebar by starlight.css. */
+  .nav-link.nav-current::after {
+    content: '';
+    position: absolute;
+    inset-block-end: 0.35rem;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    inline-size: 4px;
+    block-size: 4px;
+    border-radius: var(--radius-full);
+    background: var(--primary);
+  }
+
+  .mobile-nav summary {
+    color: var(--muted-foreground);
+    list-style: none;
+  }
+
+  .mobile-nav summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-nav .menu-close,
+  .mobile-nav[open] .menu-open {
+    display: none;
+  }
+
+  .mobile-nav[open] .menu-close {
+    display: block;
+  }
+
+  .mobile-nav nav {
+    position: absolute;
+    inset-inline: var(--space-s);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-2xs);
+    margin-block-start: var(--space-2xs);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--background);
+    box-shadow: 0 12px 32px -12px oklch(0 0 0 / 35%);
+  }
+
+  .mobile-nav nav a {
+    padding: var(--space-2xs) var(--space-xs);
+    border-radius: var(--radius-md);
+    color: var(--muted-foreground);
+    text-decoration: none;
+  }
+
+  .mobile-nav nav a:hover {
+    background: var(--interactive-background);
+    color: var(--foreground);
+  }
+</style>

@@ -1,0 +1,79 @@
+---
+/*
+ * A titled home-page section with an optional "more" link on the right.
+ * Matches Myscholar's Section component, which is what gives the home page
+ * its consistent rhythm between blocks.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  moreLink?: string;
+  moreLabel?: string;
+}
+
+const { title, moreLink, moreLabel = 'See all' } = Astro.props;
+---
+
+<section class="home-section">
+  <div class="section-head">
+    <h2>{title}</h2>
+    {
+      moreLink && (
+        <a href={moreLink} class="more-link">
+          <span>{moreLabel}</span>
+          <Icon name="arrowRight" size="0.85rem" />
+        </a>
+      )
+    }
+  </div>
+  <slot />
+</section>
+
+<style>
+  .home-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    margin-block-start: var(--space-xl);
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-s);
+    padding-block-end: var(--space-3xs);
+    border-block-end: 1px solid var(--border);
+  }
+
+  h2 {
+    margin: 0;
+    font-size: var(--step-1);
+    font-weight: var(--font-weight-medium);
+    color: var(--foreground);
+  }
+
+  .more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    color: var(--muted-foreground);
+    font-size: var(--step--1);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .more-link:hover {
+    color: var(--primary);
+  }
+
+  /* The arrow leans into the direction of travel on hover. */
+  .more-link svg {
+    transition: transform var(--motion-duration-fast) var(--motion-ease);
+  }
+
+  .more-link:hover svg {
+    transform: translateX(2px);
+  }
+</style>

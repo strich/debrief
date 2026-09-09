@@ -1,0 +1,46 @@
+---
+/*
+ * Starlight override: Footer.
+ *
+ * Keeps everything Starlight puts here — edit link, last-updated, and the
+ * prev/next pagination that makes the handbook navigable — and appends the
+ * site's own footer underneath, so both halves of the site close the same
+ * way. Starlight's "Built with Starlight" kudos is dropped because the shared
+ * footer already credits Astro, Starlight and My Scholar together.
+ */
+import EditLink from 'virtual:starlight/components/EditLink';
+import LastUpdated from 'virtual:starlight/components/LastUpdated';
+import Pagination from 'virtual:starlight/components/Pagination';
+import SiteFooter from '../SiteFooter.astro';
+---
+
+<footer class="handbook-footer">
+  <div class="meta">
+    <EditLink />
+    <LastUpdated />
+  </div>
+  <Pagination />
+  <SiteFooter />
+</footer>
+
+<style>
+  .handbook-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 3rem;
+    margin-block-start: 3rem;
+    color: var(--muted-foreground);
+    font-size: var(--sl-text-sm);
+  }
+
+  .meta > :global(p:only-child) {
+    margin-inline-start: auto;
+  }
+</style>

@@ -1,0 +1,114 @@
+---
+/*
+ * Theme control for the custom pages.
+ *
+ * Deliberately speaks Starlight's protocol rather than inventing its own:
+ * the preference is stored under the `starlight-theme` localStorage key with
+ * the same three values ('auto' | 'light' | 'dark'), and it is applied by
+ * setting a resolved `data-theme` on <html>. That's what makes the setting
+ * survive crossing between the blog and /handbook — pick dark on a post and
+ * the handbook is already dark when you get there, because Starlight's own
+ * ThemeProvider reads the same key.
+ *
+ * Cycles auto → light → dark rather than offering a three-way select, since
+ * the header only has room for one control.
+ */
+import Icon from './Icon.astro';
+---
+
+<button
+  type="button"
+  data-icon-button
+  data-theme-toggle
+  aria-live="polite"
+  title="Change colour theme"
+>
+  <Icon name="monitor" class="theme-icon" data-theme-icon="auto" />
+  <Icon name="sun" class="theme-icon" data-theme-icon="light" />
+  <Icon name="moon" class="theme-icon" data-theme-icon="dark" />
+  <span class="sr-only" data-theme-label>Change colour theme</span>
+</button>
+
+<style>
+  [data-theme-toggle] {
+    position: relative;
+    color: var(--muted-foreground);
+  }
+
+  [data-theme-toggle]:hover {
+    color: var(--foreground);
+  }
+
+  /* All three glyphs are rendered and the active one is revealed by the
+     button's state, so switching theme costs no layout shift and no DOM work
+     beyond flipping one attribute. */
+  .theme-icon {
+    display: none;
+  }
+
+  [data-theme-toggle][data-state='auto'] [data-theme-icon='auto'],
+  [data-theme-toggle][data-state='light'] [data-theme-icon='light'],
+  [data-theme-toggle][data-state='dark'] [data-theme-icon='dark'] {
+    display: block;
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const KEY = 'starlight-theme';
+    const ORDER = ['auto', 'light', 'dark'];
+    const LABELS = {
+      auto: 'Colour theme: system. Activate for light.',
+      light: 'Colour theme: light. Activate for dark.',
+      dark: 'Colour theme: dark. Activate for system.',
+    };
+
+    const stored = () => {
+      try {
+        const v = localStorage.getItem(KEY);
+        return ORDER.includes(v) ? v : 'auto';
+      } catch {
+        return 'auto';
+      }
+    };
+
+    /** Resolve 'auto' the same way Starlight's ThemeProvider does. */
+    const resolve = (pref) =>
+      pref === 'auto'
+        ? window.matchMedia('(prefers-color-scheme: light)').matches
+          ? 'light'
+          : 'dark'
+        : pref;
+
+    const apply = (pref) => {
+      document.documentElement.dataset.theme = resolve(pref);
+      document.querySelectorAll('[data-theme-toggle]').forEach((el) => {
+        el.dataset.state = pref;
+        const label = el.querySelector('[data-theme-label]');
+        if (label) label.textContent = LABELS[pref];
+        el.setAttribute('aria-label', LABELS[pref]);
+      });
+    };
+
+    apply(stored());
+
+    document.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-theme-toggle]');
+      if (!button) return;
+      const next = ORDER[(ORDER.indexOf(stored()) + 1) % ORDER.length];
+      try {
+        localStorage.setItem(KEY, next);
+      } catch {
+        /* private mode — the choice just won't persist */
+      }
+      apply(next);
+    });
+
+    /* Following the system while it changes underneath us. */
+    window
+      .matchMedia('(prefers-color-scheme: light)')
+      .addEventListener('change', () => {
+        if (stored() === 'auto') apply('auto');
+      });
+  })();
+</script>

@@ -1,0 +1,91 @@
+---
+/*
+ * Prev/next pager for the paginated /blog index. Renders nothing when there
+ * is only one page, so the blog index looks unpaginated until it needs to be.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  prevUrl?: string;
+  nextUrl?: string;
+  current: number;
+  total: number;
+}
+
+const { prevUrl, nextUrl, current, total } = Astro.props;
+---
+
+{
+  total > 1 && (
+    <nav class="pagination" aria-label="Pagination">
+      {prevUrl ? (
+        <a href={prevUrl} rel="prev">
+          <Icon name="arrowRight" size="0.85rem" class="flip" />
+          <span>Newer</span>
+        </a>
+      ) : (
+        <span class="disabled">
+          <Icon name="arrowRight" size="0.85rem" class="flip" />
+          <span>Newer</span>
+        </span>
+      )}
+
+      <span class="page-count">Page {current} of {total}</span>
+
+      {nextUrl ? (
+        <a href={nextUrl} rel="next">
+          <span>Older</span>
+          <Icon name="arrowRight" size="0.85rem" />
+        </a>
+      ) : (
+        <span class="disabled">
+          <span>Older</span>
+          <Icon name="arrowRight" size="0.85rem" />
+        </span>
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s);
+    padding-block-start: var(--space-m);
+    font-size: var(--step--1);
+  }
+
+  .pagination a,
+  .pagination .disabled {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: var(--space-3xs) var(--space-2xs);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--muted-foreground);
+    text-decoration: none;
+  }
+
+  .pagination a:hover {
+    border-color: var(--interactive-border);
+    background: var(--interactive-background);
+    color: var(--foreground);
+  }
+
+  .disabled {
+    opacity: 0.4;
+  }
+
+  .page-count {
+    color: var(--muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .flip {
+    transform: rotate(180deg);
+  }
+</style>

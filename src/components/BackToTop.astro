@@ -1,0 +1,71 @@
+---
+/*
+ * Back-to-top control. Appears once the reader is a screen or so down the
+ * page and is CSS-only: an `animation-timeline: scroll()` drives the reveal,
+ * so there is no scroll listener and nothing to throttle.
+ *
+ * Browsers without scroll-driven animations simply show it always, which is
+ * a harmless fallback for a link that only ever scrolls up.
+ */
+import Icon from './Icon.astro';
+---
+
+<a href="#main" class="back-to-top" aria-label="Back to top">
+  <Icon name="arrowUp" />
+</a>
+
+<style>
+  .back-to-top {
+    position: fixed;
+    inset-block-end: var(--space-s);
+    inset-inline-end: var(--space-s);
+    z-index: 25;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--control-size);
+    block-size: var(--control-size);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    background-color: color-mix(in oklab, var(--background) 85%, transparent);
+    backdrop-filter: blur(var(--blur-sm));
+    color: var(--muted-foreground);
+    text-decoration: none;
+  }
+
+  .back-to-top:hover {
+    border-color: var(--interactive-border);
+    color: var(--primary);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .back-to-top {
+      opacity: 0;
+      visibility: hidden;
+      animation: reveal-back-to-top linear both;
+      animation-timeline: scroll();
+      /* Fully visible by the time the reader is ~1.5 screens down. */
+      animation-range: 60vh 150vh;
+    }
+
+    @keyframes reveal-back-to-top {
+      0% {
+        opacity: 0;
+        visibility: hidden;
+      }
+      1% {
+        visibility: visible;
+      }
+      100% {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  @media print {
+    .back-to-top {
+      display: none;
+    }
+  }
+</style>

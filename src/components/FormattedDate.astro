@@ -1,0 +1,36 @@
+---
+/*
+ * Dates are rendered in the mono face throughout the site (Myscholar's
+ * convention) so they read as metadata rather than prose. Locale comes from
+ * site.config so posts, projects and updates can't format differently.
+ */
+import { SITE } from '../site.config';
+
+interface Props {
+  date: Date;
+  /** 'long' = 14 December 2014, 'short' = Dec 2014, 'year' = 2014 */
+  format?: 'long' | 'short' | 'year';
+  class?: string;
+}
+
+const { date, format = 'long', class: className } = Astro.props;
+
+const OPTIONS: Record<string, Intl.DateTimeFormatOptions> = {
+  long: { year: 'numeric', month: 'long', day: 'numeric' },
+  short: { year: 'numeric', month: 'short' },
+  year: { year: 'numeric' },
+};
+
+const label = date.toLocaleDateString(SITE.locale, OPTIONS[format]);
+---
+
+<time datetime={date.toISOString()} class:list={['formatted-date', className]}>{label}</time>
+
+<style>
+  .formatted-date {
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+    color: var(--muted-foreground);
+    white-space: nowrap;
+  }
+</style>

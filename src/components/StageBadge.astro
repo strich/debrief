@@ -1,0 +1,40 @@
+---
+/*
+ * One badge for two vocabularies — handbook `status` and blog `stage`. The
+ * level (not the label) drives the colour, which is what keeps "settled" and
+ * "evergreen" reading as the same signal. See src/styles/stage.css.
+ */
+import { HANDBOOK_STATUS_LEVEL, POST_STAGE_LEVEL, type StageLevel } from '../types';
+
+interface Props {
+  /** A handbook status (stub|working|settled) or post stage (seedling|budding|evergreen). */
+  value: string;
+  href?: string;
+  class?: string;
+}
+
+const { value, href, class: className } = Astro.props;
+
+const level: StageLevel =
+  HANDBOOK_STATUS_LEVEL[value] ?? POST_STAGE_LEVEL[value] ?? 'early';
+
+const TITLES: Record<string, string> = {
+  stub: 'Stub — placeholder, nothing written yet',
+  working: 'Working — being actively written and revised',
+  settled: "Settled — stable; won't change without reason",
+  seedling: 'Seedling — early notes',
+  budding: 'Budding — taking shape',
+  evergreen: 'Evergreen — maintained',
+};
+
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag
+  class:list={['stage-badge', className]}
+  data-stage-level={level}
+  href={href}
+  title={TITLES[value]}
+>
+  {value}
+</Tag>
