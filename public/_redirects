@@ -21,9 +21,8 @@
 # redirects transparently, so nobody subscribed since 2017 gets dropped.
 /feed/  /rss.xml  301
 
-# Per-post redirects go below this line once the WordPress export is
-# processed (docs/MIGRATION.md) — only needed for any post whose exact
-# old permalink doesn't match its new slug here. The goal is zero
-# entries in this section; every post's URL should carry over unchanged.
-# Example, if ever needed:
-# /2017/09/29/migrating-your-project-to-git-lfs/  /migrating-your-project-to-git-lfs/  301
+# Per-post redirects: NONE NEEDED. Confirmed against the 9 Sep 2026
+# WordPress export (docs/MIGRATION.md) — every one of the 17 old
+# permalinks was already flat (/post-name/, no date prefix) and matches
+# its new slug here exactly. Re-check this if a future re-export ever
+# changes a slug; the migration script warns on any mismatch.
