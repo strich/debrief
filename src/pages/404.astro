@@ -1,0 +1,78 @@
+---
+/*
+ * 404. Points at the two things a lost reader most likely wants — the
+ * handbook's contents page and the blog archive — plus search, since
+ * Pagefind indexes both halves of the site.
+ */
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Layout title="Page not found" description="That page doesn't exist.">
+  {/* Kept out of the search index — a 404 is never a useful result. */}
+  <div class="not-found" data-pagefind-ignore>
+    <p class="code">404</p>
+    <h1>That page doesn't exist</h1>
+    <p class="lede">
+      It may have moved when this site came off WordPress. Old post links
+      should redirect automatically — if one didn't, these will help.
+    </p>
+    <p class="links">
+      <a href="/handbook/"><Icon name="book" size="0.9rem" /> Handbook</a>
+      <a href="/blog"><Icon name="post" size="0.9rem" /> Blog archive</a>
+      <a href="/"><Icon name="home" size="0.9rem" /> Home</a>
+    </p>
+  </div>
+</Layout>
+
+<style>
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding-block: var(--space-2xl);
+    text-align: center;
+  }
+
+  .code {
+    margin: 0;
+    color: var(--primary);
+    font-family: var(--font-mono);
+    font-size: var(--step-2);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--step-3);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .lede {
+    max-inline-size: 34rem;
+    margin: 0;
+    color: var(--prose-foreground);
+    text-wrap: pretty;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-s);
+    margin-block-start: var(--space-xs);
+    font-size: var(--step--1);
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    color: var(--muted-foreground);
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    color: var(--primary);
+  }
+</style>

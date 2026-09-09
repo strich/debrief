@@ -1,0 +1,72 @@
+---
+/*
+ * /projects — the tooling and infrastructure work.
+ *
+ * Selected items first, then the rest by recency. Cards are wide (prose=false
+ * on the layout) since a two-column grid of cards reads badly at the 44rem
+ * prose measure.
+ */
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => {
+  if (a.data.selected !== b.data.selected) return a.data.selected ? -1 : 1;
+  return b.data.fromDate.valueOf() - a.data.fromDate.valueOf();
+});
+---
+
+<Layout
+  title="Projects"
+  description="Tooling and infrastructure work: AI code review, autonomous agent loops, and the version-control plumbing underneath a Unity codebase."
+  crumbs={[{ label: 'Projects', icon: 'tool' }]}
+  prose={false}
+>
+  <header class="index-header">
+    <h1>Projects</h1>
+    <p class="page-lede">
+      The tooling this site is about. Most of it exists because something in a
+      real studio pipeline broke first — the write-ups live in the{' '}
+      <a href="/handbook/">handbook</a>.
+    </p>
+  </header>
+
+  <div class="project-grid">
+    {projects.map((project) => <ProjectCard project={project} />)}
+  </div>
+</Layout>
+
+<style>
+  .index-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    max-inline-size: var(--measure);
+    padding-block-end: var(--space-m);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--step-4);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+  }
+
+  .index-header p {
+    margin: 0;
+    color: var(--prose-foreground);
+    text-wrap: pretty;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-s);
+  }
+
+  @media (width >= 52rem) {
+    .project-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

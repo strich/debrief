@@ -1,0 +1,113 @@
+---
+/*
+ * The blog index at /blog, paginated at /blog/2, /blog/3, …
+ * Page size comes from SITE.postsPerPage.
+ */
+import type { GetStaticPaths, Page } from 'astro';
+import { getPosts, type Post } from '../../lib/blog';
+import { SITE } from '../../site.config';
+import Layout from '../../layouts/Layout.astro';
+import Pagination from '../../components/Pagination.astro';
+import PostCard from '../../components/PostCard.astro';
+import Icon from '../../components/Icon.astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getPosts();
+  return paginate(posts, { pageSize: SITE.postsPerPage });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props as { page: Page<Post> };
+---
+
+<Layout
+  title={page.currentPage > 1 ? `Blog — page ${page.currentPage}` : 'Blog'}
+  description="Field reports on AI infrastructure, game repositories and the toolchain underneath them."
+  crumbs={[{ label: 'Blog', icon: 'post' }]}
+>
+  <header class="index-header">
+    <h1>Blog</h1>
+    <p class="page-lede">
+      Field reports — what actually broke, what it cost, and what changed as a
+      result. What settles down here gets written up in the{' '}
+      <a href="/handbook/">handbook</a>.
+    </p>
+    <p class="index-links">
+      <a href="/blog/tags"><Icon name="link" size="0.85rem" /> Browse by tag</a>
+      <a href="/rss.xml"><Icon name="rss" size="0.85rem" /> RSS</a>
+    </p>
+  </header>
+
+  {
+    page.data.length > 0 ? (
+      <div class="post-list">
+        {page.data.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <p class="empty">No posts yet.</p>
+    )
+  }
+
+  <Pagination
+    prevUrl={page.url.prev}
+    nextUrl={page.url.next}
+    current={page.currentPage}
+    total={page.lastPage}
+  />
+</Layout>
+
+<style>
+  .index-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    padding-block-end: var(--space-s);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--step-4);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+  }
+
+  .index-header p {
+    margin: 0;
+    color: var(--prose-foreground);
+    text-wrap: pretty;
+  }
+
+  .index-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    font-size: var(--step--1);
+  }
+
+  .index-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    color: var(--muted-foreground);
+    text-decoration: none;
+  }
+
+  .index-links a:hover {
+    color: var(--primary);
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* The last card's rule would double up with the pager's own top spacing. */
+  .post-list > :global(.post-card:last-child) {
+    border-block-end: none;
+  }
+
+  .empty {
+    color: var(--muted-foreground);
+  }
+</style>

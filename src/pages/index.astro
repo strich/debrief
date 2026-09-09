@@ -1,165 +1,336 @@
 ---
+/*
+ * The home page.
+ *
+ * Structure follows Myscholar's: a profile block, then a stack of short
+ * sections each with a "see all" link. The slot where the theme puts
+ * "selected publications" is where the handbook goes — it's the canonical
+ * thing here, and the blog orbits it.
+ *
+ * Section sizes come from SITE.home so the page can be tuned without editing
+ * this file; setting any count to 0 removes that section.
+ */
 import { getCollection } from 'astro:content';
+import { getPosts } from '../lib/blog';
+import { PROFILE, SITE } from '../site.config';
+import Layout from '../layouts/Layout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Icon from '../components/Icon.astro';
+import PostCard from '../components/PostCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Section from '../components/Section.astro';
+import StageBadge from '../components/StageBadge.astro';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const { recentPostCount, updateCount, projectCount } = SITE.home;
+
+const posts = recentPostCount > 0 ? (await getPosts()).slice(0, recentPostCount) : [];
+
+const updates =
+  updateCount > 0
+    ? (await getCollection('updates'))
+        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+        .slice(0, updateCount)
+    : [];
+
+const projects =
+  projectCount > 0
+    ? (await getCollection('projects'))
+        .sort((a, b) => {
+          if (a.data.selected !== b.data.selected) return a.data.selected ? -1 : 1;
+          return b.data.fromDate.valueOf() - a.data.fromDate.valueOf();
+        })
+        .slice(0, projectCount)
+    : [];
+
+/*
+ * The handbook's six sections, as shown on the home page. Hand-listed rather
+ * than derived from the docs collection: the sidebar order in
+ * astro.config.mjs is editorial, and deriving it here would silently
+ * re-alphabetise it. Keep in step with the `sidebar` config.
+ */
+const HANDBOOK_SECTIONS = [
+  {
+    href: '/handbook/version-control/git-for-game-projects-what-breaks/',
+    label: 'Version control at game-repo scale',
+    blurb: 'Git, LFS and Perforce against binary assets — what actually breaks.',
+  },
+  {
+    href: '/handbook/unity-toolchain/the-unity-cli/',
+    label: 'The Unity toolchain',
+    blurb: 'Headless builds, batchmode, project and package layout.',
+  },
+  {
+    href: '/handbook/ai-assisted-development/context-for-a-unity-repo/',
+    label: 'AI-assisted development',
+    blurb: 'Coding agents on a large Unity codebase, review, and triage loops.',
+  },
+  {
+    href: '/handbook/ai-cost-discipline/cost-per-merged-pr/',
+    label: 'AI cost discipline',
+    blurb: 'Model routing, prompt-cache economics, cost per merged PR.',
+  },
+  {
+    href: '/handbook/ci-build-infrastructure/build-farm-shape/',
+    label: 'CI and build infrastructure',
+    blurb: 'Build farm shape, caching that helps, artifact distribution.',
+  },
+  {
+    href: '/handbook/people-and-practice/review-culture/',
+    label: 'People and practice',
+    blurb: 'Adoption without a mandate, ownership when agents write code.',
+  },
+];
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Debrief — Abstractions and Notes</title>
-    <meta
-      name="description"
-      content="Practical AI infrastructure and game-repo engineering notes from Scott Richmond."
-    />
-    <link rel="alternate" type="application/rss+xml" title="Debrief" href="/rss.xml" />
-    <link rel="icon" href="/favicon.svg" />
-  </head>
-  <body>
-    <header class="site-header">
-      <div>
-        <h1>Debrief</h1>
-        <p class="tagline">Abstractions and notes on AI infrastructure for small game studios.</p>
-      </div>
-      <nav>
-        <a href="/handbook/">Handbook</a>
-        <a href="/rss.xml">RSS</a>
-      </nav>
-    </header>
-    <main data-pagefind-body>
-      <ul class="posts">
-        {
-          posts.map((post) => (
-            <li>
-              <a href={`/${post.id}/`}>
-                <span class="title">{post.data.title}</span>
-                <time datetime={post.data.pubDate.toISOString()}>
-                  {post.data.pubDate.toLocaleDateString('en-AU', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </time>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+
+<Layout prose={false}>
+  <section class="profile">
+    <div class="profile-text">
+      <h1>{PROFILE.name}</h1>
+      <p class="role">{PROFILE.role}</p>
+      <p class="bio">{PROFILE.bio}</p>
+      <p class="profile-links">
+        <a href={PROFILE.links.github} rel="me noopener" target="_blank">
+          <Icon name="github" size="0.9rem" /> GitHub
+        </a>
+        <a href="/rss.xml"><Icon name="rss" size="0.9rem" /> RSS</a>
+        <span class="location"><Icon name="location" size="0.9rem" /> {PROFILE.location}</span>
+      </p>
+    </div>
+  </section>
+
+  <Section title="The handbook" moreLink="/handbook/" moreLabel="Open the handbook">
+    <p class="handbook-lede page-lede">
+      The canonical version of what I know about running game-dev studio
+      infrastructure and AI. Posts explore a topic; what settles gets written
+      up here. Every page is marked with how much weight it holds:
+    </p>
+    {/*
+      A legend row rather than badges inline in the sentence: three bordered
+      pills mid-paragraph broke the line rhythm badly, and the whole point of
+      the badges is that they're scannable.
+    */}
+    <p class="stage-legend">
+      <StageBadge value="stub" />
+      <StageBadge value="working" />
+      <StageBadge value="settled" />
+    </p>
+    <ul class="handbook-sections">
       {
-        posts.length === 0 && (
-          <p class="empty">
-            No posts migrated yet — the 17 posts from the old WordPress site land here once the
-            export is processed. See <code>docs/MIGRATION.md</code> in the repo.
-          </p>
-        )
+        HANDBOOK_SECTIONS.map((section) => (
+          <li>
+            <a href={section.href}>
+              <span class="section-label">{section.label}</span>
+              <span class="section-blurb">{section.blurb}</span>
+            </a>
+          </li>
+        ))
       }
-    </main>
-    <footer class="site-footer">
-      <p>Debrief — Abstractions and Notes. <a href="https://github.com/strich">github.com/strich</a></p>
-    </footer>
-    <style>
-      :root {
-        color-scheme: light dark;
-        --ink: #171d1a;
-        --ink-2: #56635d;
-        --accent: #2c6b5e;
-        --rule: #dce3dc;
-        --ground: #f5f7f3;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --ink: #e7ede8;
-          --ink-2: #9aa79f;
-          --accent: #74bca9;
-          --rule: #2b342e;
-          --ground: #111512;
-        }
-      }
-      body {
-        margin: 0;
-        background: var(--ground);
-        color: var(--ink);
-        font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
-      }
-      .site-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        max-width: 720px;
-        margin: 0 auto;
-        padding: 3rem 1.5rem 1.5rem;
-        border-bottom: 2px solid var(--ink);
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-      .site-header h1 {
-        font-family: 'Bricolage Grotesque', -apple-system, sans-serif;
-        font-size: 2.4rem;
-        margin: 0;
-      }
-      .tagline {
-        margin: 0.4rem 0 0;
-        color: var(--ink-2);
-        max-width: 40ch;
-      }
-      .site-header nav a {
-        margin-left: 1.25rem;
-        color: var(--ink-2);
-        text-decoration: none;
-        font-size: 0.9rem;
-      }
-      .site-header nav a:hover {
-        color: var(--accent);
-      }
-      main {
-        max-width: 720px;
-        margin: 0 auto;
-        padding: 2rem 1.5rem 4rem;
-      }
-      ul.posts {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      ul.posts li {
-        border-bottom: 1px solid var(--rule);
-      }
-      ul.posts a {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        padding: 1rem 0;
-        text-decoration: none;
-        color: var(--ink);
-      }
-      ul.posts a:hover .title {
-        color: var(--accent);
-      }
-      ul.posts time {
-        font-family: ui-monospace, monospace;
-        font-size: 0.8rem;
-        color: var(--ink-2);
-        white-space: nowrap;
-      }
-      .empty {
-        color: var(--ink-2);
-        font-size: 0.95rem;
-      }
-      .site-footer {
-        max-width: 720px;
-        margin: 0 auto;
-        padding: 1.5rem;
-        border-top: 2px solid var(--ink);
-        font-family: ui-monospace, monospace;
-        font-size: 0.8rem;
-        color: var(--ink-2);
-      }
-      .site-footer a {
-        color: var(--accent);
-      }
-    </style>
-  </body>
-</html>
+    </ul>
+  </Section>
+
+  {
+    updates.length > 0 && (
+      <Section title="Now" moreLink="/now">
+        <ul class="update-list">
+          {updates.map((update) => (
+            <li>
+              <FormattedDate date={update.data.date} format="short" />
+              <span>{update.data.summary}</span>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+
+  {
+    projects.length > 0 && (
+      <Section title="Projects" moreLink="/projects">
+        <div class="project-grid">
+          {projects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
+  {
+    posts.length > 0 && (
+      <Section title="Recent posts" moreLink="/blog">
+        <div class="post-list">
+          {posts.map((post) => (
+            <PostCard post={post} />
+          ))}
+        </div>
+      </Section>
+    )
+  }
+</Layout>
+
+<style>
+  .profile {
+    padding-block: var(--space-m) var(--space-s);
+  }
+
+  .profile-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    max-inline-size: var(--measure);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--step-4);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+    letter-spacing: -0.015em;
+  }
+
+  .role {
+    margin: 0;
+    color: var(--primary);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+
+  .bio {
+    margin: 0;
+    color: var(--prose-foreground);
+    font-size: var(--step-1);
+    line-height: 1.65;
+    text-wrap: pretty;
+  }
+
+  .profile-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin: var(--space-2xs) 0 0;
+    font-size: var(--step--1);
+  }
+
+  .profile-links a,
+  .location {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    color: var(--muted-foreground);
+    text-decoration: none;
+  }
+
+  .profile-links a:hover {
+    color: var(--primary);
+  }
+
+  .handbook-lede {
+    max-inline-size: var(--measure);
+    margin: 0;
+    color: var(--prose-foreground);
+    text-wrap: pretty;
+  }
+
+  .stage-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    max-inline-size: var(--measure);
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: var(--step--1);
+  }
+
+  .handbook-sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xs);
+    padding: 0;
+    margin-block-start: var(--space-2xs);
+    list-style: none;
+  }
+
+  @media (width >= 52rem) {
+    .handbook-sections {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .handbook-sections a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    height: 100%;
+    padding: var(--space-2xs) var(--space-xs);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition:
+      border-color var(--motion-duration-fast) var(--motion-ease),
+      background-color var(--motion-duration-fast) var(--motion-ease);
+  }
+
+  .handbook-sections a:hover {
+    border-color: var(--interactive-border);
+    background: var(--interactive-background);
+  }
+
+  .section-label {
+    color: var(--foreground);
+    font-size: var(--step-0);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .section-blurb {
+    color: var(--muted-foreground);
+    font-size: var(--step--1);
+    text-wrap: pretty;
+  }
+
+  .update-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    padding: 0;
+    margin: 0;
+    max-inline-size: var(--measure);
+    list-style: none;
+  }
+
+  .update-list li {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+    color: var(--prose-foreground);
+  }
+
+  @media (width >= 40rem) {
+    .update-list li {
+      grid-template-columns: 7rem 1fr;
+      gap: var(--space-s);
+    }
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-s);
+  }
+
+  @media (width >= 52rem) {
+    .project-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    max-inline-size: var(--measure);
+  }
+
+  .post-list > :global(.post-card:last-child) {
+    border-block-end: none;
+  }
+</style>

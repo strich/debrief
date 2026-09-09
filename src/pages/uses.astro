@@ -1,0 +1,167 @@
+---
+/*
+ * /uses — the actual stack.
+ *
+ * Content comes from src/content/uses.json rather than being hard-coded in
+ * this file (which is how the theme does it), so keeping the page current is
+ * a data edit and never a component edit. That matters here: models and
+ * harnesses churn faster than anything else on the site.
+ */
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Chip from '../components/Chip.astro';
+import Icon from '../components/Icon.astro';
+
+const groups = await getCollection('uses');
+---
+
+<Layout
+  title="Uses"
+  description="The tools behind the work: models and coding harnesses, the Unity and version-control toolchain, CI, and the hardware it all runs on."
+  crumbs={[{ label: 'Uses', icon: 'tool' }]}
+  prose={false}
+>
+  <header class="index-header">
+    <h1>Uses</h1>
+    <p class="page-lede">
+      What I actually run. The AI half of this list turns over fast, so treat
+      dates on the <a href="/now">now page</a> as the real currency signal.
+    </p>
+  </header>
+
+  <div class="use-groups">
+    {
+      groups.map((group) => (
+        <section class="use-group">
+          <h2>{group.data.name}</h2>
+          {group.data.note && <p class="group-note">{group.data.note}</p>}
+          <ul class="tool-list">
+            {group.data.items.map((tool) => (
+              <li class="tool">
+                <div class="tool-head">
+                  {tool.href ? (
+                    <a href={tool.href} rel="noopener" target="_blank">
+                      {tool.name}
+                      <Icon name="link" size="0.75rem" />
+                    </a>
+                  ) : (
+                    <span class="tool-name">{tool.name}</span>
+                  )}
+                  {tool.tags.length > 0 && (
+                    <span class="tool-tags">
+                      {tool.tags.map((tag) => (
+                        <Chip>{tag}</Chip>
+                      ))}
+                    </span>
+                  )}
+                </div>
+                <p class="tool-description">{tool.description}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</Layout>
+
+<style>
+  .index-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    max-inline-size: var(--measure);
+    padding-block-end: var(--space-m);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--step-4);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+  }
+
+  .index-header p {
+    margin: 0;
+    color: var(--prose-foreground);
+    text-wrap: pretty;
+  }
+
+  .use-groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-l);
+  }
+
+  h2 {
+    margin: 0;
+    padding-block-end: var(--space-3xs);
+    border-block-end: 1px solid var(--border);
+    font-size: var(--step-1);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .group-note {
+    margin-block: var(--space-2xs) 0;
+    color: var(--muted-foreground);
+    font-size: var(--step--1);
+  }
+
+  .tool-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xs);
+    padding: 0;
+    margin-block-start: var(--space-s);
+    list-style: none;
+  }
+
+  @media (width >= 48rem) {
+    .tool-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .tool {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .tool-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3xs);
+  }
+
+  .tool-head a,
+  .tool-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    color: var(--foreground);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+  }
+
+  .tool-head a:hover {
+    color: var(--primary);
+  }
+
+  .tool-head a svg {
+    color: var(--muted-foreground);
+  }
+
+  .tool-tags {
+    display: inline-flex;
+    gap: var(--space-3xs);
+  }
+
+  .tool-description {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: var(--step--1);
+    text-wrap: pretty;
+  }
+</style>

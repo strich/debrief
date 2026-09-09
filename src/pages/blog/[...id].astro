@@ -1,0 +1,150 @@
+---
+/*
+ * A single post at /blog/<slug>.
+ *
+ * Posts used to render at the site root to match the old WordPress
+ * permalinks exactly. They now live under /blog/ (the theme's own shape,
+ * which is also what makes the index, tag pages and breadcrumbs coherent),
+ * and every old root permalink 301s here from public/_redirects.
+ * scripts/check-redirects.mjs fails the build if one is missing.
+ *
+ * Drafts are deliberately still routed — reachable at their URL for preview,
+ * but absent from every listing and the feed.
+ */
+import { getCollection, render } from 'astro:content';
+import { getNeighbours, readingTime } from '../../lib/blog';
+import Layout from '../../layouts/Layout.astro';
+import Chip from '../../components/Chip.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import PostNav from '../../components/PostNav.astro';
+import StageBadge from '../../components/StageBadge.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { newer, older } = await getNeighbours(post.id);
+const minutes = readingTime(post.body);
+const tags = post.data.tags ?? [];
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  publishedTime={post.data.pubDate}
+  modifiedTime={post.data.updatedDate}
+  crumbs={[
+    { label: 'Blog', href: '/blog', icon: 'post' },
+    { label: post.data.title, icon: 'post' },
+  ]}
+>
+  <article>
+    <header class="post-header">
+      <h1>{post.data.title}</h1>
+      <p class="post-meta">
+        <FormattedDate date={post.data.pubDate} />
+        <span class="dot" aria-hidden="true">·</span>
+        <span class="reading-time">{minutes} min read</span>
+        {post.data.updatedDate && (
+          <>
+            <span class="dot" aria-hidden="true">·</span>
+            <span>updated <FormattedDate date={post.data.updatedDate} /></span>
+          </>
+        )}
+        {post.data.stage && <StageBadge value={post.data.stage} />}
+      </p>
+      {tags.length > 0 && (
+        <ul class="post-tags" aria-label="Tags">
+          {tags.map((tag: string) => (
+            <li><Chip href={`/blog/tags/${tag}`}>{tag}</Chip></li>
+          ))}
+        </ul>
+      )}
+    </header>
+
+    {post.data.feedsHandbookPage && post.data.feedsHandbookPage.length > 0 && (
+      <aside class="feeds-handbook">
+        <p>
+          This post feeds the handbook:
+          {post.data.feedsHandbookPage.map((page: string, i: number) => (
+            <>
+              {i > 0 && ', '}
+              <a href={page}>{page.replace('/handbook/', '').replace(/\/$/, '')}</a>
+            </>
+          ))}
+        </p>
+      </aside>
+    )}
+
+    <prose-content>
+      <Content />
+    </prose-content>
+  </article>
+
+  <PostNav newer={newer} older={older} />
+</Layout>
+
+<style>
+  .post-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    padding-block-end: var(--space-m);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--step-4);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+    text-wrap: balance;
+  }
+
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: var(--step--1);
+  }
+
+  .reading-time {
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+  }
+
+  .dot {
+    color: var(--border);
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  /* Provenance link forward to the handbook — the "posts orbit the handbook"
+     relationship, made visible on the post itself. */
+  .feeds-handbook {
+    padding: var(--space-2xs) var(--space-s);
+    margin-block-end: var(--space-m);
+    border-inline-start: 3px solid var(--primary);
+    border-start-end-radius: var(--radius-lg);
+    border-end-end-radius: var(--radius-lg);
+    background: var(--interactive-background);
+    font-size: var(--step--1);
+  }
+
+  .feeds-handbook p {
+    margin: 0;
+  }
+</style>

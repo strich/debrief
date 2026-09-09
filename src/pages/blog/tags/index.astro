@@ -1,0 +1,78 @@
+---
+/*
+ * Tag index. Ordered by post count, so the site's actual subject matter is
+ * legible at a glance rather than alphabetised into noise.
+ */
+import { getTagCounts } from '../../../lib/blog';
+import Layout from '../../../layouts/Layout.astro';
+
+const tags = await getTagCounts();
+---
+
+<Layout
+  title="Tags"
+  description="Every tag used across the Debrief blog, by post count."
+  crumbs={[{ label: 'Blog', href: '/blog', icon: 'post' }, { label: 'Tags' }]}
+>
+  <h1>Tags</h1>
+  <p class="lede">{tags.length} tags across the archive.</p>
+
+  <ul class="tag-list">
+    {
+      tags.map(({ tag, count }) => (
+        <li>
+          <a href={`/blog/tags/${tag}`}>
+            <span class="tag-name">{tag}</span>
+            <span class="tag-count">{count}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</Layout>
+
+<style>
+  h1 {
+    margin: 0;
+    font-size: var(--step-4);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .lede {
+    margin-block: var(--space-2xs) var(--space-m);
+    color: var(--muted-foreground);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .tag-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: var(--space-3xs) var(--space-xs);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    color: var(--muted-foreground);
+    font-size: var(--step--1);
+    text-decoration: none;
+  }
+
+  .tag-list a:hover {
+    border-color: var(--interactive-border);
+    background: var(--interactive-background);
+    color: var(--foreground);
+  }
+
+  .tag-count {
+    color: var(--primary);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+</style>

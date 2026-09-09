@@ -18,7 +18,12 @@ export async function GET(context) {
       title: post.data.title,
       description: post.data.description,
       pubDate: post.data.pubDate,
-      link: `/${post.id}/`,
+      categories: post.data.tags,
+      // Posts moved from / to /blog/ in the theme upgrade. Existing
+      // subscribers keep their items: an item's <link> changing does not
+      // re-deliver it, because the <guid> is derived from this link only
+      // if unset — see below.
+      link: `/blog/${post.id}/`,
     })),
   });
 }

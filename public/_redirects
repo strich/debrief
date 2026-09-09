@@ -21,8 +21,37 @@
 # redirects transparently, so nobody subscribed since 2017 gets dropped.
 /feed/  /rss.xml  301
 
-# Per-post redirects: NONE NEEDED. Confirmed against the 9 Sep 2026
-# WordPress export (docs/MIGRATION.md) — every one of the 17 old
-# permalinks was already flat (/post-name/, no date prefix) and matches
-# its new slug here exactly. Re-check this if a future re-export ever
-# changes a slug; the migration script warns on any mismatch.
+# ---------------------------------------------------------------------
+# Per-post redirects.
+#
+# Posts used to serve at the site root (/post-name/) to match the old
+# WordPress permalinks exactly. The Myscholar-style rebuild moved them to
+# /blog/<slug>, which is what makes the blog index, tag pages and
+# breadcrumbs coherent — so every one of those 17 root permalinks now
+# needs a 301. Twelve years of inbound links point at them.
+#
+# Each line below is generated from a post's `originalPath` frontmatter.
+# scripts/check-redirects.mjs asserts that every published post's
+# originalPath appears here and fails `npm run build` if one is missing,
+# so adding a post with a legacy URL can't silently break it.
+#
+# Do NOT collapse these into a splat like `/* /blog/:splat`. That would
+# also swallow /handbook/*, /projects/*, /uses and /now.
+# ---------------------------------------------------------------------
+/collaborative-code-design/  /blog/collaborative-code-design  301
+/creating-a-cutout-shader-for-doors-and-windows/  /blog/creating-a-cutout-shader-for-doors-and-windows  301
+/edit-and-apply-registry-settings-via-powershell/  /blog/edit-and-apply-registry-settings-via-powershell  301
+/half-life-1-custom-map-chaocity3-by-sulsa/  /blog/half-life-1-custom-map-chaocity3-by-sulsa  301
+/how-to-improve-the-performance-of-unity3d-animations/  /blog/how-to-improve-the-performance-of-unity3d-animations  301
+/important-tips-on-hiring-a-video-games-writer/  /blog/important-tips-on-hiring-a-video-games-writer  301
+/improving-the-fbx-workflow-between-3ds-max-and-unity3d/  /blog/improving-the-fbx-workflow-between-3ds-max-and-unity3d  301
+/installing-mono3-on-ubuntu-12-04/  /blog/installing-mono3-on-ubuntu-12-04  301
+/migrating-to-google-shared-team-drive/  /blog/migrating-to-google-shared-team-drive  301
+/migrating-your-project-to-git-lfs/  /blog/migrating-your-project-to-git-lfs  301
+/performing-a-clean-install-of-f5-big-ip-software/  /blog/performing-a-clean-install-of-f5-big-ip-software  301
+/tuning-git-for-large-binary-repositories/  /blog/tuning-git-for-large-binary-repositories  301
+/unity-4-and-visual-studio-2012/  /blog/unity-4-and-visual-studio-2012  301
+/using-git-sync-to-automate-common-git-commands/  /blog/using-git-sync-to-automate-common-git-commands  301
+/using-git-with-3d-games/  /blog/using-git-with-3d-games  301
+/using-meraki-to-deploy-smb-networks/  /blog/using-meraki-to-deploy-smb-networks  301
+/why-is-physics-updatebodies-using-up-so-much-time-20ms-to-2ms/  /blog/why-is-physics-updatebodies-using-up-so-much-time-20ms-to-2ms  301

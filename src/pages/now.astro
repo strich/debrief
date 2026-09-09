@@ -1,0 +1,142 @@
+---
+/*
+ * /now — a dated log of what's current.
+ *
+ * This is the theme's "updates" timeline. It exists to answer "is this site
+ * alive and is the Uses page stale?" in one glance, which is why every entry
+ * is dated and the newest is always first.
+ */
+import { getCollection, render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Icon from '../components/Icon.astro';
+
+const entries = (await getCollection('updates')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+/* Bodies are optional — an entry can be a single summary line. Rendering them
+   up front keeps the template free of awaits inside the loop. */
+const rendered = await Promise.all(
+  entries.map(async (entry) => ({
+    entry,
+    Content: (await render(entry)).Content,
+    hasBody: Boolean(entry.body && entry.body.trim().length > 0),
+  }))
+);
+---
+
+<Layout
+  title="Now"
+  description="What I'm working on at the moment, dated."
+  crumbs={[{ label: 'Now', icon: 'clock' }]}
+>
+  <header class="index-header">
+    <h1>Now</h1>
+    <p>What's in front of me at the moment. Newest first.</p>
+  </header>
+
+  <ol class="timeline">
+    {
+      rendered.map(({ entry, Content, hasBody }) => (
+        <li class="entry">
+          <FormattedDate date={entry.data.date} class="entry-date" />
+          <div class="entry-body">
+            <p class="entry-summary">{entry.data.summary}</p>
+            {hasBody && (
+              <prose-content class="prose-sm">
+                <Content />
+              </prose-content>
+            )}
+            {entry.data.link && (
+              <a href={entry.data.link} class="entry-link">
+                <span>{entry.data.linkLabel ?? 'Read more'}</span>
+                <Icon name="arrowRight" size="0.8rem" />
+              </a>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</Layout>
+
+<style>
+  .index-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    padding-block-end: var(--space-m);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--step-4);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .index-header p {
+    margin: 0;
+    color: var(--prose-foreground);
+  }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+    padding-block: var(--space-s);
+    border-block-end: 1px solid var(--border);
+  }
+
+  /* On wide screens the date becomes a gutter, which is what turns a list of
+     paragraphs into something that reads as a timeline. */
+  @media (width >= 40rem) {
+    .entry {
+      grid-template-columns: 9rem 1fr;
+      gap: var(--space-s);
+    }
+  }
+
+  .entry:last-child {
+    border-block-end: none;
+  }
+
+  .entry-date {
+    padding-block-start: 0.15rem;
+  }
+
+  .entry-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    min-inline-size: 0;
+  }
+
+  .entry-summary {
+    margin: 0;
+    color: var(--foreground);
+    text-wrap: pretty;
+  }
+
+  .entry-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    color: var(--muted-foreground);
+    font-size: var(--step--1);
+    text-decoration: none;
+    width: fit-content;
+  }
+
+  .entry-link:hover {
+    color: var(--primary);
+  }
+</style>

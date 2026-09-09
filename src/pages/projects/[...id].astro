@@ -1,0 +1,172 @@
+---
+/*
+ * A project detail page at /projects/<id>.
+ */
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Chip from '../../components/Chip.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Icon from '../../components/Icon.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const d = project.data;
+---
+
+<Layout
+  title={d.title}
+  description={d.description}
+  crumbs={[
+    { label: 'Projects', href: '/projects', icon: 'tool' },
+    { label: d.title },
+  ]}
+>
+  <header class="project-header">
+    <h1>{d.title}</h1>
+    <p class="project-dates">
+      <FormattedDate date={d.fromDate} format="short" />
+      <span aria-hidden="true">→</span>
+      {d.toDate ? <FormattedDate date={d.toDate} format="short" /> : <span>now</span>}
+      <span class="status" data-status={d.status}>{d.status}</span>
+    </p>
+    <p class="project-description">{d.description}</p>
+
+    {(d.code || d.url) && (
+      <p class="project-links">
+        {d.code && (
+          <a href={d.code} rel="noopener" target="_blank">
+            <Icon name="github" size="0.9rem" /> Code
+          </a>
+        )}
+        {d.url && (
+          <a href={d.url} rel="noopener" target="_blank">
+            <Icon name="link" size="0.9rem" /> Link
+          </a>
+        )}
+      </p>
+    )}
+
+    {(d.types.length > 0 || d.stack.length > 0) && (
+      <ul class="facets" aria-label="Type and stack">
+        {d.types.map((t: string) => <li><Chip>{t}</Chip></li>)}
+        {d.stack.map((s: string) => <li><Chip>{s}</Chip></li>)}
+      </ul>
+    )}
+  </header>
+
+  <prose-content>
+    <Content />
+  </prose-content>
+
+  {d.handbookPages && d.handbookPages.length > 0 && (
+    <aside class="handbook-links">
+      <p>Written up in the handbook:</p>
+      <ul>
+        {d.handbookPages.map((page: string) => (
+          <li><a href={page}>{page.replace('/handbook/', '').replace(/\/$/, '')}</a></li>
+        ))}
+      </ul>
+    </aside>
+  )}
+</Layout>
+
+<style>
+  .project-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    padding-block-end: var(--space-m);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--step-4);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+  }
+
+  .project-dates {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    color: var(--muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .status {
+    padding: 0.1rem 0.45rem;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.7rem;
+  }
+
+  .status[data-status='active'] { color: var(--stage-mid); }
+  .status[data-status='shipped'] { color: var(--stage-done); }
+  .status[data-status='paused'],
+  .status[data-status='archived'] { color: var(--muted-foreground); }
+
+  .project-description {
+    margin: 0;
+    color: var(--prose-foreground);
+    font-size: var(--step-1);
+    text-wrap: pretty;
+  }
+
+  .project-links {
+    display: flex;
+    gap: var(--space-s);
+    margin: 0;
+    font-size: var(--step--1);
+  }
+
+  .project-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    color: var(--muted-foreground);
+    text-decoration: none;
+  }
+
+  .project-links a:hover {
+    color: var(--primary);
+  }
+
+  .facets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .handbook-links {
+    padding: var(--space-xs) var(--space-s);
+    margin-block-start: var(--space-m);
+    border-inline-start: 3px solid var(--primary);
+    border-start-end-radius: var(--radius-lg);
+    border-end-end-radius: var(--radius-lg);
+    background: var(--interactive-background);
+    font-size: var(--step--1);
+  }
+
+  .handbook-links p {
+    margin: 0 0 0.25rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  .handbook-links ul {
+    padding-inline-start: 1.1rem;
+    margin: 0;
+  }
+</style>
