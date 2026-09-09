@@ -13,3 +13,7 @@ node_modules/
 .DS_Store
 .vscode/*
 !.vscode/extensions.json
+
+# raw WordPress uploads dump - migration source material, not part of
+# the site (the 14 files actually used were copied into public/assets/blog/)
+/wp uploads/

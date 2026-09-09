@@ -22,7 +22,7 @@ npm run preview  # serve the built output locally
 - [x] Astro + Starlight scaffold, blog/handbook routing, Pagefind search covering both sections
 - [x] Handbook skeleton seeded (26 pages, mostly `status: stub`)
 - [x] All 17 old posts migrated with real content — zero redirects needed, every slug matched — see `docs/MIGRATION.md`
-- [ ] Images/attachments from `wp-content/uploads` — 14 references across 9 posts, see `docs/MISSING_ASSETS.md`
+- [x] Images/attachments from `wp-content/uploads` — all 14 in place under `public/assets/blog/`
 - [ ] Pushed to `github.com/strich/debrief`
 - [ ] Connected to Cloudflare Pages
 - [ ] Redirect rule + "Always Use HTTPS" configured on the `strichnet.com` zone (DNS is already on Cloudflare) — `docs/REDIRECTS.md`

@@ -12,7 +12,7 @@ Why might you want to do this? Because it costs precious time for Unity to move 
 ### Option 1 - Set everything up manually again
 
 Often you'll want at least some of the bone Game Objects available for use, such as the hands and head. You can manually dictate what bones Unity will create a Game Object for in the [Rig tab for the model](file:///C:/Program%20Files/Unity/Editor/Data/Documentation/en/Manual/FBXImporter-Rig.html) importer.
-[![2015-09-21 11_59_00-Skype™ [1] - scott@strichnet.com](/assets/blog/how-to-improve-the-performance-of-unity3d-animations/2015-09-21-11_59_00-Skype™-1-scott@strichnet.com_.png)](/assets/blog/how-to-improve-the-performance-of-unity3d-animations/2015-09-21-11_59_00-Skype™-1-scott@strichnet.com_.png)
+[![2015-09-21 11_59_00-Skype™ [1] - scott@strichnet.com](/assets/blog/how-to-improve-the-performance-of-unity3d-animations/2015-09-21-11_59_00-skype-1-scott-strichnet-com.png)](/assets/blog/how-to-improve-the-performance-of-unity3d-animations/2015-09-21-11_59_00-skype-1-scott-strichnet-com.png)
 Note that this wont automatically update the model prefab if you've already made one, so you'll need to recreate the prefab with the new mesh.
 
 ### Option 2 - Use a script to automate it!
