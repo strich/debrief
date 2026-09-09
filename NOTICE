@@ -1,0 +1,38 @@
+Debrief — strichnet.com
+Copyright 2026 Scott Richmond
+
+------------------------------------------------------------------------
+Third-party material
+------------------------------------------------------------------------
+
+This site's design system is derived from My Scholar (also published as
+astro-scholar), an Astro theme by My (Chiffon) Nguyen.
+
+    https://github.com/mychiffonn/myscholar
+    Licensed under the Apache License, Version 2.0
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Files in src/styles/ are adapted from that project — the OKLCH colour
+token structure, the Utopia fluid spacing and grid scale, the type scale,
+and the base typography, card, bar, icon-button and disclosure rules.
+Colours, fonts and several component treatments have been changed for
+this site. Several components in src/components/ follow its structure and
+naming conventions.
+
+My Scholar is itself built on astro-erudite by enscribe, also Apache-2.0:
+
+    https://github.com/jktrn/astro-erudite
+
+Icon paths in src/components/Icon.astro are from Mingcute (Apache-2.0):
+
+    https://github.com/Richard9394/MingCute
+
+Bundled fonts in public/fonts/:
+
+    DM Sans   — SIL Open Font License 1.1
+                https://fonts.google.com/specimen/DM+Sans
+    Lilex     — SIL Open Font License 1.1
+                https://github.com/mishamyrt/Lilex
+
+Site content (posts and handbook pages) is licensed CC BY 4.0 unless
+stated otherwise, as noted in the site footer.

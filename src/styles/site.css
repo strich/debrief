@@ -1,0 +1,53 @@
+/*
+ * The custom-pages half of the design system: reset, prose typography, and
+ * the presentational primitives (cards, chips, bars, buttons).
+ *
+ * Loaded only by src/layouts/Layout.astro. Astro scopes nothing here, so it
+ * IS global — but only on the routes the shell renders (home, /blog/*,
+ * /projects/*, /uses, /now). Starlight pages never see it, which is what
+ * keeps the reset from fighting Starlight's own base styles. Both halves get
+ * their colour, type and spacing from tokens.css.
+ */
+@import "./tokens.css";
+@import "./reset.css";
+@import "./layout-shell.css";
+@import "./typography.css";
+@import "./typography-headings.css";
+@import "./typography-inline.css";
+@import "./typography-lists.css";
+@import "./typography-block.css";
+@import "./typography-tables.css";
+@import "./disclosure.css";
+@import "./celestial.css";
+@import "./icon-button.css";
+@import "./bar.css";
+@import "./card.css";
+@import "./stage.css";
+
+/*
+ * Inline links in page-level copy.
+ *
+ * typography.css only decorates links inside <prose-content>, because prose
+ * is the one place Myscholar writes body copy. This site also writes prose
+ * directly in page templates — the lede on /blog, /projects and /uses — and
+ * there a link inherited `text-decoration-color: transparent` with no colour
+ * change, so it rendered as plain text. An undiscoverable link is worse than
+ * no link.
+ *
+ * Opt-in by class rather than "every <a> in <main> except…". The exclusion
+ * version needed a growing list (chips, badges, see-all arrows, card links,
+ * icon rows) and still underlined the next card component someone added.
+ * `.page-lede` marks the handful of paragraphs that really are prose, so a
+ * new component can never be caught by it.
+ */
+main .page-lede a {
+  --underline: var(--muted-foreground);
+  color: var(--foreground);
+  text-decoration-line: underline;
+  text-underline-offset: 0.2em;
+}
+
+main .page-lede a:is(:hover, :focus-visible) {
+  color: var(--primary);
+  text-decoration-color: currentColor;
+}

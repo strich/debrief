@@ -1,0 +1,109 @@
+/*
+ * Debrief palette — Myscholar's token structure (OKLCH + light-dark()),
+ * retuned to Debrief's own colours.
+ *
+ * Neutrals are the green-tinted greys the site already used (#f5f7f3 ground,
+ * #171d1a ink) rather than Myscholar's blue-violet ones, so the identity
+ * survives the restyle. The accent hue is the original #2c6b5e green, which
+ * is also why Expressive Code stays on the Everforest pair.
+ *
+ * Every colour is defined once here. Components consume the semantic tokens
+ * (--primary, --accent, --muted, --border …) and never hard-code a value.
+ */
+:root {
+  /* #f5f7f3 / #111512 */
+  --background: light-dark(
+    oklch(0.9735 0.0057 128.53),
+    oklch(0.1902 0.0086 153.08)
+  );
+  /* #171d1a / #e7ede8 */
+  --foreground: light-dark(
+    oklch(0.2234 0.0106 163.83),
+    oklch(0.9401 0.0092 150.69)
+  );
+
+  /* The Debrief green. Lightened in dark mode (#74bca9) so it keeps its
+     contrast against the near-black ground instead of going muddy. */
+  --primary: light-dark(
+    oklch(0.4827 0.0682 177.6),
+    oklch(0.7422 0.078 175.4)
+  );
+  --primary-foreground: light-dark(
+    oklch(0.9735 0.0057 128.53),
+    oklch(0.1902 0.0086 153.08)
+  );
+
+  /* Surfaces: cards, code blocks, table stripes. */
+  --muted: light-dark(
+    oklch(0.9405 0.0075 137.5),
+    oklch(0.2283 0.0106 151.28)
+  );
+  /* #56635d / #9aa79f — metadata, captions, inactive nav. */
+  --muted-foreground: light-dark(
+    oklch(0.4867 0.0186 166.1),
+    oklch(0.7157 0.0186 158.93)
+  );
+
+  /* Interactive emphasis. Darker than --primary in light mode and lighter in
+     dark mode, so hover always moves away from the page ground. */
+  --accent: light-dark(
+    oklch(0.3876 0.055 177.43),
+    oklch(0.8838 0.0495 177.06)
+  );
+  --accent-foreground: light-dark(
+    oklch(0.9735 0.0057 128.53),
+    oklch(0.1902 0.0086 153.08)
+  );
+
+  --interactive-background: color-mix(in oklab, var(--primary) 12%, transparent);
+  --interactive-border: color-mix(in oklab, var(--primary) 55%, var(--border));
+  --interactive-foreground: var(--foreground);
+
+  --destructive: light-dark(oklch(0.55 0.216 19.8), oklch(0.737 0.125 11.2));
+
+  /* #dce3dc / #2b342e */
+  --border: light-dark(
+    oklch(0.9085 0.012 145.48),
+    oklch(0.3144 0.0162 156.17)
+  );
+  --ring: var(--primary);
+
+  /* Handbook page maturity + blog stage badges share one scale, so a
+     "settled" handbook page and an "evergreen" post read the same. */
+  --stage-early: light-dark(oklch(0.58 0.13 62), oklch(0.78 0.12 68));
+  --stage-mid: var(--primary);
+  --stage-done: light-dark(oklch(0.48 0.11 145), oklch(0.76 0.13 148));
+
+  color-scheme: light dark;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+*,
+::before,
+::after,
+::backdrop,
+::file-selector-button {
+  border-color: var(--border);
+
+  &:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 0.25rem;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}

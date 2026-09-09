@@ -1,0 +1,24 @@
+/*
+ * Shell-only layout rules. These were part of Myscholar's layout.css but are
+ * kept out of the shared token file: Starlight computes its own
+ * scroll-padding from --sl-nav-height, and letting these override it puts
+ * anchored handbook headings underneath the sticky header.
+ */
+html {
+  scrollbar-gutter: stable;
+  overflow-x: clip;
+
+  @media (width < 64rem) {
+    --bar-nav-height: calc(2rem + 2 * var(--space-2xs) + 2px);
+    --bar-toc-height: 0px;
+    scroll-padding-block-start: calc(
+      var(--bar-nav-height) +
+      var(--bar-toc-height) +
+      var(--space-2xs)
+    );
+
+    &:has(page-toc) {
+      --bar-toc-height: calc(1.5 * var(--step--1) + 2 * var(--space-2xs) + 2px);
+    }
+  }
+}

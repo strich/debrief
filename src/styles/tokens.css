@@ -1,0 +1,17 @@
+/*
+ * The shared half of the design system: colour, type stack, spacing, shape.
+ *
+ * This file is imported by BOTH halves of the site — the custom shell in
+ * src/layouts/Layout.astro and Starlight (via `customCss` in
+ * astro.config.mjs). It must therefore contain tokens and near-zero element
+ * styling, because anything it styles it styles inside the handbook too.
+ *
+ * Element-level rules (the reset, prose typography, cards, bars) live in
+ * site.css and are loaded only by the custom shell. Starlight has its own
+ * equivalents and is mapped onto these tokens in starlight.css instead.
+ */
+@import "./color.css";
+@import "./fonts.css";
+@import "./shape.css";
+@import "./layout.css";
+@import "./type-scale.css";

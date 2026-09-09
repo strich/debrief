@@ -1,0 +1,31 @@
+/*
+ * Type scale and prose measure. Shared with Starlight (see tokens.css), which
+ * is why this holds only custom properties — the element-level typography
+ * rules that consume them are in typography.css, loaded by the custom shell
+ * alone.
+ */
+:root {
+  --step--1: 0.875rem;
+  --step-0: 1rem;
+  --step-1: 1.125rem;
+  --step-2: 1.5rem;
+  --step-3: 1.875rem;
+  --step-4: 2.25rem;
+  --step-5: 3rem;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 450;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --tracking-tight: 0;
+  --leading-offset: 0.65rem;
+  --line-height-tight: 1.15;
+
+  --prose-foreground: color-mix(in oklab, var(--foreground) 88%, transparent);
+  --prose-marker: var(--primary);
+
+  /* Reading measure for prose. The handbook maps --sl-content-width onto this
+     so a paragraph is the same width in a post and a handbook page. */
+  --measure: 44rem;
+}

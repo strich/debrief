@@ -1,0 +1,48 @@
+/*
+ * Maturity badges. One visual scale serves two vocabularies:
+ *
+ *   handbook page  stub  →  working  →  settled
+ *   blog post      seedling → budding → evergreen
+ *
+ * Keeping them on the same three colours is the point — a reader learns the
+ * signal once and it means the same thing on either half of the site. The
+ * badge is styled by [data-stage-level] rather than by the label so the two
+ * vocabularies can't drift apart.
+ */
+.stage-badge {
+  display: inline-flex;
+  gap: 0.375em;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.stage-badge[data-stage-level="early"] {
+  color: var(--stage-early);
+}
+
+.stage-badge[data-stage-level="mid"] {
+  color: var(--stage-mid);
+}
+
+.stage-badge[data-stage-level="done"] {
+  color: var(--stage-done);
+}
+
+/* The dot carries the colour at small sizes, where a 1px border on a 0.7rem
+   label is easy to miss. */
+.stage-badge::before {
+  content: "";
+  inline-size: 0.4em;
+  block-size: 0.4em;
+  border-radius: var(--radius-full);
+  background: currentColor;
+}
