@@ -1,0 +1,157 @@
+---
+// Blog post layout, deliberately plain (not Starlight's layout) since
+// posts are narrative field reports, not reference docs.
+//
+// IMPORTANT — the Pagefind gotcha from the plan: Starlight stamps its
+// own pages with data-pagefind-body. Once that attribute exists
+// ANYWHERE on the site, Pagefind stops indexing any page that lacks
+// it. This attribute on <article> is that fix — remove it and the
+// blog silently drops out of search.
+interface Props {
+  title: string;
+  description?: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  tags?: string[];
+  originalPath?: string;
+}
+const { title, description, pubDate, updatedDate, tags = [], originalPath } = Astro.props;
+const formatted = pubDate.toLocaleDateString('en-AU', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — Debrief</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="alternate" type="application/rss+xml" title="Debrief" href="/rss.xml" />
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="/" class="brand">Debrief</a>
+      <nav>
+        <a href="/">Posts</a>
+        <a href="/handbook/">Handbook</a>
+        <a href="/rss.xml">RSS</a>
+      </nav>
+    </header>
+    <main>
+      <article data-pagefind-body>
+        <header class="post-head">
+          <h1>{title}</h1>
+          <p class="meta">
+            <time datetime={pubDate.toISOString()}>{formatted}</time>
+            {tags.length > 0 && <span class="tags">{tags.join(' · ')}</span>}
+          </p>
+        </header>
+        <div class="post-body">
+          <slot />
+        </div>
+        {originalPath && (
+          <p class="provenance">
+            Originally published at <code>{originalPath}</code> on the old WordPress site — same URL, migrated in place.
+          </p>
+        )}
+      </article>
+    </main>
+    <footer class="site-footer">
+      <p>Debrief — Abstractions and Notes. <a href="https://github.com/strich">github.com/strich</a></p>
+    </footer>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --ink: #171d1a;
+        --ink-2: #56635d;
+        --accent: #2c6b5e;
+        --rule: #dce3dc;
+        --ground: #f5f7f3;
+        --surface: #ffffff;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --ink: #e7ede8;
+          --ink-2: #9aa79f;
+          --accent: #74bca9;
+          --rule: #2b342e;
+          --ground: #111512;
+          --surface: #191e1a;
+        }
+      }
+      body {
+        margin: 0;
+        background: var(--ground);
+        color: var(--ink);
+        font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+        line-height: 1.62;
+      }
+      .site-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 1.5rem;
+        border-bottom: 2px solid var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+      .brand {
+        font-weight: 700;
+        font-size: 1.3rem;
+        color: var(--ink);
+        text-decoration: none;
+      }
+      .site-header nav a {
+        margin-left: 1.25rem;
+        color: var(--ink-2);
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+      .site-header nav a:hover {
+        color: var(--accent);
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 4rem;
+      }
+      .post-head h1 {
+        font-family: 'Bricolage Grotesque', -apple-system, sans-serif;
+        font-size: 2.2rem;
+        line-height: 1.1;
+        margin: 0 0 0.5rem;
+      }
+      .meta {
+        font-family: ui-monospace, monospace;
+        font-size: 0.8rem;
+        color: var(--ink-2);
+        letter-spacing: 0.02em;
+      }
+      .post-body :global(pre) {
+        padding: 1rem;
+        border-radius: 6px;
+        overflow-x: auto;
+      }
+      .provenance {
+        margin-top: 3rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--rule);
+        font-family: ui-monospace, monospace;
+        font-size: 0.8rem;
+        color: var(--ink-2);
+      }
+      .site-footer {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 1.5rem;
+        border-top: 2px solid var(--ink);
+        font-family: ui-monospace, monospace;
+        font-size: 0.8rem;
+        color: var(--ink-2);
+      }
+      .site-footer a {
+        color: var(--accent);
+      }
+    </style>
+  </body>
+</html>

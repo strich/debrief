@@ -1,0 +1,165 @@
+---
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Debrief — Abstractions and Notes</title>
+    <meta
+      name="description"
+      content="Practical AI infrastructure and game-repo engineering notes from Scott Richmond."
+    />
+    <link rel="alternate" type="application/rss+xml" title="Debrief" href="/rss.xml" />
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div>
+        <h1>Debrief</h1>
+        <p class="tagline">Abstractions and notes on AI infrastructure for small game studios.</p>
+      </div>
+      <nav>
+        <a href="/handbook/">Handbook</a>
+        <a href="/rss.xml">RSS</a>
+      </nav>
+    </header>
+    <main data-pagefind-body>
+      <ul class="posts">
+        {
+          posts.map((post) => (
+            <li>
+              <a href={`/${post.id}/`}>
+                <span class="title">{post.data.title}</span>
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('en-AU', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      {
+        posts.length === 0 && (
+          <p class="empty">
+            No posts migrated yet — the 17 posts from the old WordPress site land here once the
+            export is processed. See <code>docs/MIGRATION.md</code> in the repo.
+          </p>
+        )
+      }
+    </main>
+    <footer class="site-footer">
+      <p>Debrief — Abstractions and Notes. <a href="https://github.com/strich">github.com/strich</a></p>
+    </footer>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --ink: #171d1a;
+        --ink-2: #56635d;
+        --accent: #2c6b5e;
+        --rule: #dce3dc;
+        --ground: #f5f7f3;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --ink: #e7ede8;
+          --ink-2: #9aa79f;
+          --accent: #74bca9;
+          --rule: #2b342e;
+          --ground: #111512;
+        }
+      }
+      body {
+        margin: 0;
+        background: var(--ground);
+        color: var(--ink);
+        font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+      }
+      .site-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem 1.5rem;
+        border-bottom: 2px solid var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .site-header h1 {
+        font-family: 'Bricolage Grotesque', -apple-system, sans-serif;
+        font-size: 2.4rem;
+        margin: 0;
+      }
+      .tagline {
+        margin: 0.4rem 0 0;
+        color: var(--ink-2);
+        max-width: 40ch;
+      }
+      .site-header nav a {
+        margin-left: 1.25rem;
+        color: var(--ink-2);
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+      .site-header nav a:hover {
+        color: var(--accent);
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+      }
+      ul.posts {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      ul.posts li {
+        border-bottom: 1px solid var(--rule);
+      }
+      ul.posts a {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 0;
+        text-decoration: none;
+        color: var(--ink);
+      }
+      ul.posts a:hover .title {
+        color: var(--accent);
+      }
+      ul.posts time {
+        font-family: ui-monospace, monospace;
+        font-size: 0.8rem;
+        color: var(--ink-2);
+        white-space: nowrap;
+      }
+      .empty {
+        color: var(--ink-2);
+        font-size: 0.95rem;
+      }
+      .site-footer {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 1.5rem;
+        border-top: 2px solid var(--ink);
+        font-family: ui-monospace, monospace;
+        font-size: 0.8rem;
+        color: var(--ink-2);
+      }
+      .site-footer a {
+        color: var(--accent);
+      }
+    </style>
+  </body>
+</html>

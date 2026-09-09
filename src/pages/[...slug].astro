@@ -1,0 +1,34 @@
+---
+// Blog posts render at the site root (e.g. /tuning-git-for-large-binary-repositories/)
+// rather than under /blog/, so they can match the old WordPress "post name"
+// permalinks exactly once we confirm those from the XML export. Anything
+// that can't match exactly gets a 301 in public/_redirects instead of a
+// route change here — see docs/MIGRATION.md.
+import { getCollection, render } from 'astro:content';
+import BlogPost from '../layouts/BlogPost.astro';
+
+export async function getStaticPaths() {
+  // Unlike the index page and RSS feed, this does NOT filter out
+  // drafts — a draft post is viewable directly at its URL (handy for
+  // previewing a migrated post before flipping draft: false) but won't
+  // be linked from anywhere until then.
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<BlogPost
+  title={post.data.title}
+  description={post.data.description}
+  pubDate={post.data.pubDate}
+  updatedDate={post.data.updatedDate}
+  tags={post.data.tags}
+  originalPath={post.data.originalPath}
+>
+  <Content />
+</BlogPost>
