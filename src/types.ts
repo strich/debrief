@@ -31,7 +31,7 @@ export interface Crumb {
 export type StageLevel = 'early' | 'mid' | 'done';
 
 export const HANDBOOK_STATUS_LEVEL: Record<string, StageLevel> = {
-  stub: 'early',
+  researching: 'early',
   working: 'mid',
   settled: 'done',
 };

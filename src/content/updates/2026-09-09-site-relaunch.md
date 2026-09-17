@@ -6,5 +6,5 @@ linkLabel: What the handbook is
 ---
 
 Seventeen years of posts moved across, every old permalink redirected, and the
-handbook scaffolded at `/handbook`. The blog is the field-report half; the
+handbook scaffolded at `/handbook`. The blog is the field-report half. The
 handbook is what those reports settle into.

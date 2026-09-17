@@ -1,5 +1,5 @@
 {
-  "_comment": "Content for /uses. Edit this file rather than the page component — the AI half of this list turns over fast. Tags: free | paid | open-source | self-hosted | favourite.",
+  "_comment": "Content for /uses. Edit this file rather than the page component, because the AI half of this list turns over fast. Tags: free | paid | open-source | self-hosted | favourite.",
   "groups": [
     {
       "id": "ai-coding",
@@ -105,7 +105,7 @@
         },
         {
           "name": "Starlight",
-          "description": "Docs framework behind /handbook — sidebar, pagination and search.",
+          "description": "Docs framework behind /handbook. Sidebar, pagination and search.",
           "href": "https://starlight.astro.build",
           "tags": ["free", "open-source"]
         },

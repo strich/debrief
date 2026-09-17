@@ -4,7 +4,7 @@
  *
  * Structure follows Myscholar's: a profile block, then a stack of short
  * sections each with a "see all" link. The slot where the theme puts
- * "selected publications" is where the handbook goes — it's the canonical
+ * "selected publications" is where the handbook goes. It's the canonical
  * thing here, and the blog orbits it.
  *
  * Section sizes come from SITE.home so the page can be tuned without editing
@@ -19,7 +19,6 @@ import Icon from '../components/Icon.astro';
 import PostCard from '../components/PostCard.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Section from '../components/Section.astro';
-import StageBadge from '../components/StageBadge.astro';
 
 const { recentPostCount, updateCount, projectCount } = SITE.home;
 
@@ -52,7 +51,7 @@ const HANDBOOK_SECTIONS = [
   {
     href: '/handbook/version-control/git-for-game-projects-what-breaks/',
     label: 'Version control at game-repo scale',
-    blurb: 'Git, LFS and Perforce against binary assets — what actually breaks.',
+    blurb: 'Git, LFS and Perforce against binary assets, and what actually breaks.',
   },
   {
     href: '/handbook/unity-toolchain/the-unity-cli/',
@@ -99,21 +98,6 @@ const HANDBOOK_SECTIONS = [
   </section>
 
   <Section title="The handbook" moreLink="/handbook/" moreLabel="Open the handbook">
-    <p class="handbook-lede page-lede">
-      The canonical version of what I know about running game-dev studio
-      infrastructure and AI. Posts explore a topic; what settles gets written
-      up here. Every page is marked with how much weight it holds:
-    </p>
-    {/*
-      A legend row rather than badges inline in the sentence: three bordered
-      pills mid-paragraph broke the line rhythm badly, and the whole point of
-      the badges is that they're scannable.
-    */}
-    <p class="stage-legend">
-      <StageBadge value="stub" />
-      <StageBadge value="working" />
-      <StageBadge value="settled" />
-    </p>
     <ul class="handbook-sections">
       {
         HANDBOOK_SECTIONS.map((section) => (
@@ -222,24 +206,6 @@ const HANDBOOK_SECTIONS = [
 
   .profile-links a:hover {
     color: var(--primary);
-  }
-
-  .handbook-lede {
-    max-inline-size: var(--measure);
-    margin: 0;
-    color: var(--prose-foreground);
-    text-wrap: pretty;
-  }
-
-  .stage-legend {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.4rem;
-    max-inline-size: var(--measure);
-    margin: 0;
-    color: var(--muted-foreground);
-    font-size: var(--step--1);
   }
 
   .handbook-sections {

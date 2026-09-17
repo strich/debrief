@@ -8,12 +8,12 @@ export const collections = {
   // Starlight's own docs collection — this is the handbook, nested at
   // src/content/docs/handbook/ so it serves at /handbook/...
   // Extended with a `status` field per the plan's "timely rather than
-  // polished" model (Oxide RFD-inspired): stub / working / settled.
+  // polished" model (Oxide RFD-inspired): researching / working / settled.
   docs: defineCollection({
     loader: docsLoader(),
     schema: docsSchema({
       extend: z.object({
-        status: z.enum(['stub', 'working', 'settled']).default('stub'),
+        status: z.enum(['researching', 'working', 'settled']).default('researching'),
         // Optional link forward to the handbook page a post fed into,
         // or back to the post a page grew out of — bidirectional
         // provenance links per the plan.

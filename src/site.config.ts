@@ -18,7 +18,7 @@ export const SITE = {
   /** Used as the <title> suffix and the default meta description source. */
   tagline: 'Abstractions and notes on AI infrastructure for small game studios.',
   description:
-    'Practical AI infrastructure and game-repo engineering notes from Scott Richmond — what breaks when you run coding agents against a real Unity codebase, what it costs, and how a small studio adopts it without a mandate.',
+    'Practical AI infrastructure and game-repo engineering notes from Scott Richmond. What breaks when you run coding agents against a real Unity codebase, what it costs, and how a small studio adopts it without a mandate.',
   href: 'https://strichnet.com',
   author: 'Scott Richmond',
   locale: 'en-AU',
@@ -36,10 +36,10 @@ export const PROFILE = {
   name: 'Scott Richmond',
   role: 'Game developer · studio infrastructure',
   /**
-   * The framing rule for everything public-facing: a developer using AI to
-   * improve process, tooling and velocity — not "AI is making this game".
+   * The framing rule for everything public-facing. A developer using AI to
+   * improve process, tooling and velocity, not "AI is making this game".
    */
-  bio: "I build and run the infrastructure a small game studio needs to use AI seriously — coding agents against a real Unity codebase, the CI and version control underneath them, and what it all costs. I write up what actually broke.",
+  bio: "Director, Producer and Programmer at Brightrock Games. I came up through network engineering, virtualisation and application support before games, and I still work like a generalist. Right now that mostly means the infrastructure a small studio needs to use AI seriously. I write up what actually broke.",
   location: 'Australia',
   links: {
     github: 'https://github.com/strich',

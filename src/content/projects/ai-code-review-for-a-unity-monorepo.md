@@ -18,16 +18,26 @@ handbookPages:
 ---
 
 Off-the-shelf AI review tools assume a repository that fits comfortably in a
-context window and a token that can read whatever it likes. A production Unity
-repo is neither: it is large by design, most of its diff by volume is
-serialised asset data rather than code, and on an organisation repo the
-personal access token is scoped down deliberately.
+context window, and a token that can read whatever it likes. A production Unity
+repo is neither. It is large by design, most of its diff by volume is serialised
+asset data rather than code, and on an organisation repo the personal access
+token is scoped down deliberately.
 
 This is a fork of an existing open-source reviewer with the changes needed to
 survive those three facts.
 
-:::note[Placeholder]
-Written as a starting point during the theme upgrade — replace with your own
-account of what you changed and what it caught. The frontmatter is complete
-and the page renders; only this prose is provisional.
-:::
+The largest change is classification. Before anything is sent for review the
+diff is split into source and data, and only source goes forward. That sounds
+obvious and it is the difference between a reviewer that comments on scene YAML
+and one that reviews C#. The reasoning is written up in
+[Unity serialization](/handbook/version-control/unity-serialization/).
+
+The second largest is permissions, which I did not expect. Most review tooling
+assumes a token that can read the whole organisation and post freely. Making it
+work inside a scoped-down token on an org repo took longer than anything to do
+with models or prompts.
+
+It runs on pull requests, it is advisory rather than a merge gate, and it stays
+quiet most of the time. That last part is deliberate. A reviewer that comments
+on everything gets muted within a week, and the whole argument for starting here
+was that it had to be easy to ignore.

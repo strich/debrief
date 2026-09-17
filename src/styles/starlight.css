@@ -21,7 +21,7 @@
  *    there is no second palette to keep in sync here.
  */
 @import "./tokens.css";
-/* Handbook page maturity (status: stub / working / settled) renders through
+/* Handbook page maturity (status: researching / working / settled) renders through
    the same .stage-badge component the blog uses for post stages, so one
    visual scale covers both halves of the site. */
 @import "./stage.css";
