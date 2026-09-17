@@ -13,6 +13,6 @@ Actually. It's not. It took the better part of a day and a Unity Dev to explain 
 > *"it's sending all the transform update messages*."
 
 Huh. Okay. So after digging around for a bit it turns out the problem is this: For whatever reason, this method deals with sending back the transform updates of every transform under a Rigidbody. The model we were testing with has, as with all imported rigged models, its default skeleton structure laid out in 20-30 empty GameObjects. It's a well known optimization that one must trim these as much as possible and it's something we would do when we got around to really implementing animated characters. However it seems quite insane for it to impact Physics.
-In either case the solution is simple - Remove the dead transforms ([You can read about optimizing rigged models here](http://www.strichnet.com/how-to-improve-the-performance-of-unity3d-animations/)) and...
+In either case the solution is simple - Remove the dead transforms ([You can read about optimizing rigged models here](/blog/how-to-improve-the-performance-of-unity3d-animations/)) and...
 [![2016-07-01 18_48_49-](/assets/blog/why-is-physics-updatebodies-using-up-so-much-time-20ms-to-2ms/2016-07-01-18_48_49-.png)](/assets/blog/why-is-physics-updatebodies-using-up-so-much-time-20ms-to-2ms/2016-07-01-18_48_49-.png)
 20ms to 2ms. Crazy. Simulating 500 or even 1000 active agents is actually possible right now. I wonder how many Unity developers dump the physics system without realizing this optimization.

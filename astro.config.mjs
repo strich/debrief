@@ -17,7 +17,7 @@ export default defineConfig({
         'Practical AI infrastructure and game-repo engineering notes from Scott Richmond — what breaks when you run coding agents against a real Unity codebase, what it costs, and how a small studio adopts it without a mandate.',
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/strich' }],
       editLink: {
-        baseUrl: 'https://github.com/strich/debrief/edit/main/',
+        baseUrl: 'https://github.com/strich/debrief/edit/master/',
       },
       lastUpdated: true,
       pagination: true,
