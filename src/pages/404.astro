@@ -1,8 +1,8 @@
 ---
 /*
- * 404. Points at the two things a lost reader most likely wants — the
- * handbook's contents page and the blog archive — plus search, since
- * Pagefind indexes both halves of the site.
+ * 404. Points at the thing a lost reader most likely wants — the blog
+ * archive — plus search. The handbook link is out while the handbook is
+ * hidden (see HANDBOOK_VISIBLE in src/site.config.ts).
  */
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
@@ -18,7 +18,6 @@ import Icon from '../components/Icon.astro';
       should redirect automatically — if one didn't, these will help.
     </p>
     <p class="links">
-      <a href="/handbook/"><Icon name="book" size="0.9rem" /> Handbook</a>
       <a href="/blog"><Icon name="post" size="0.9rem" /> Blog archive</a>
       <a href="/"><Icon name="home" size="0.9rem" /> Home</a>
     </p>

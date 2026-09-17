@@ -47,8 +47,25 @@ export const PROFILE = {
   },
 } as const;
 
+/*
+ * The handbook is still scaffolding — 26 pages, every one of them `status:
+ * stub` — so it is deliberately not linked or indexed anywhere public yet.
+ * The routes still build and /handbook/ still resolves, so nothing 404s and
+ * any link already shared keeps working; it just isn't discoverable.
+ *
+ * Flip this to `true` to bring it back. It gates the nav entry below and the
+ * "written up in the handbook" callouts on project and post pages. Three
+ * things are NOT driven by this flag and have to be undone by hand:
+ *   - the home page's handbook section (src/pages/index.astro) — deleted
+ *     rather than gated, because it also carried the page's framing copy
+ *   - the sitemap filter in astro.config.mjs
+ *   - `pagefind: false` in the frontmatter of src/content/docs/handbook/**
+ * `git revert` of the commit that added this comment restores all of it.
+ */
+export const HANDBOOK_VISIBLE = false;
+
 export const NAV_LINKS: NavLink[] = [
-  { href: '/handbook/', label: 'Handbook' },
+  ...(HANDBOOK_VISIBLE ? [{ href: '/handbook/', label: 'Handbook' }] : []),
   { href: '/blog', label: 'Blog' },
   { href: '/projects', label: 'Projects' },
   { href: '/uses', label: 'Uses' },

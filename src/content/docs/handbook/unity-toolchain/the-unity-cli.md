@@ -1,5 +1,7 @@
 ---
 title: "The Unity CLI"
+# Hidden while the handbook is scaffolding — see HANDBOOK_VISIBLE in src/site.config.ts.
+pagefind: false
 status: stub
 ---
 

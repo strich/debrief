@@ -23,9 +23,8 @@ export default defineConfig({
       pagination: true,
       // Starlight ships its own /404 rendered in the docs layout. The site
       // has one at src/pages/404.astro instead, which uses the shared shell
-      // and points a lost reader at the blog archive as well as the
-      // handbook — most 404s here will be stale links to the 17 old
-      // WordPress post URLs, not to handbook pages. Two routes claiming
+      // and points a lost reader at the blog archive — most 404s here will be
+      // stale links to the 17 old WordPress post URLs. Two routes claiming
       // /404 is currently an Astro warning and a hard error in a future
       // version, so Starlight's is switched off rather than left to race.
       disable404Route: true,
@@ -87,6 +86,13 @@ export default defineConfig({
       },
     }),
     mdx(),
-    sitemap(),
+    // The handbook is hidden while it is still scaffolding (see
+    // HANDBOOK_VISIBLE in src/site.config.ts). Keeping it out of the sitemap
+    // stops crawlers
+    // finding 26 stub pages that nothing links to; the routes still build and
+    // still resolve, so any link already shared keeps working.
+    sitemap({
+      filter: (page) => !new URL(page).pathname.startsWith('/handbook'),
+    }),
   ],
 });

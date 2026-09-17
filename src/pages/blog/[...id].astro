@@ -18,6 +18,7 @@ import Chip from '../../components/Chip.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import PostNav from '../../components/PostNav.astro';
 import StageBadge from '../../components/StageBadge.astro';
+import { HANDBOOK_VISIBLE } from '../../site.config';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -66,7 +67,7 @@ const tags = post.data.tags ?? [];
       )}
     </header>
 
-    {post.data.feedsHandbookPage && post.data.feedsHandbookPage.length > 0 && (
+    {HANDBOOK_VISIBLE && post.data.feedsHandbookPage && post.data.feedsHandbookPage.length > 0 && (
       <aside class="feeds-handbook">
         <p>
           This post feeds the handbook:
