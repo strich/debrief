@@ -1,7 +1,5 @@
 ---
 title: "Project and package layout"
-# Hidden while the handbook is scaffolding — see HANDBOOK_VISIBLE in src/site.config.ts.
-pagefind: false
 status: stub
 ---
 

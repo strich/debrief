@@ -1,7 +1,5 @@
 ---
 title: "Unity serialization: .meta, GUIDs, YAML and merge"
-# Hidden while the handbook is scaffolding — see HANDBOOK_VISIBLE in src/site.config.ts.
-pagefind: false
 status: stub
 ---
 

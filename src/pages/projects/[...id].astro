@@ -7,7 +7,6 @@ import Layout from '../../layouts/Layout.astro';
 import Chip from '../../components/Chip.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Icon from '../../components/Icon.astro';
-import { HANDBOOK_VISIBLE } from '../../site.config';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -64,7 +63,7 @@ const d = project.data;
     <Content />
   </prose-content>
 
-  {HANDBOOK_VISIBLE && d.handbookPages && d.handbookPages.length > 0 && (
+  {d.handbookPages && d.handbookPages.length > 0 && (
     <aside class="handbook-links">
       <p>Written up in the handbook:</p>
       <ul>

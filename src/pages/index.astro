@@ -4,9 +4,8 @@
  *
  * Structure follows Myscholar's: a profile block, then a stack of short
  * sections each with a "see all" link. The slot where the theme puts
- * "selected publications" held the handbook; while the handbook is hidden
- * (see HANDBOOK_VISIBLE in src/site.config.ts) the blog takes that slot, so the page
- * still leads with writing rather than opening on a dated timeline.
+ * "selected publications" is where the handbook goes — it's the canonical
+ * thing here, and the blog orbits it.
  *
  * Section sizes come from SITE.home so the page can be tuned without editing
  * this file; setting any count to 0 removes that section.
@@ -20,6 +19,7 @@ import Icon from '../components/Icon.astro';
 import PostCard from '../components/PostCard.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Section from '../components/Section.astro';
+import StageBadge from '../components/StageBadge.astro';
 
 const { recentPostCount, updateCount, projectCount } = SITE.home;
 
@@ -41,6 +41,45 @@ const projects =
         })
         .slice(0, projectCount)
     : [];
+
+/*
+ * The handbook's six sections, as shown on the home page. Hand-listed rather
+ * than derived from the docs collection: the sidebar order in
+ * astro.config.mjs is editorial, and deriving it here would silently
+ * re-alphabetise it. Keep in step with the `sidebar` config.
+ */
+const HANDBOOK_SECTIONS = [
+  {
+    href: '/handbook/version-control/git-for-game-projects-what-breaks/',
+    label: 'Version control at game-repo scale',
+    blurb: 'Git, LFS and Perforce against binary assets — what actually breaks.',
+  },
+  {
+    href: '/handbook/unity-toolchain/the-unity-cli/',
+    label: 'The Unity toolchain',
+    blurb: 'Headless builds, batchmode, project and package layout.',
+  },
+  {
+    href: '/handbook/ai-assisted-development/context-for-a-unity-repo/',
+    label: 'AI-assisted development',
+    blurb: 'Coding agents on a large Unity codebase, review, and triage loops.',
+  },
+  {
+    href: '/handbook/ai-cost-discipline/cost-per-merged-pr/',
+    label: 'AI cost discipline',
+    blurb: 'Model routing, prompt-cache economics, cost per merged PR.',
+  },
+  {
+    href: '/handbook/ci-build-infrastructure/build-farm-shape/',
+    label: 'CI and build infrastructure',
+    blurb: 'Build farm shape, caching that helps, artifact distribution.',
+  },
+  {
+    href: '/handbook/people-and-practice/review-culture/',
+    label: 'People and practice',
+    blurb: 'Adoption without a mandate, ownership when agents write code.',
+  },
+];
 ---
 
 <Layout prose={false}>
@@ -59,18 +98,47 @@ const projects =
     </div>
   </section>
 
+  <Section title="The handbook" moreLink="/handbook/" moreLabel="Open the handbook">
+    <p class="handbook-lede page-lede">
+      The canonical version of what I know about running game-dev studio
+      infrastructure and AI. Posts explore a topic; what settles gets written
+      up here. Every page is marked with how much weight it holds:
+    </p>
+    {/*
+      A legend row rather than badges inline in the sentence: three bordered
+      pills mid-paragraph broke the line rhythm badly, and the whole point of
+      the badges is that they're scannable.
+    */}
+    <p class="stage-legend">
+      <StageBadge value="stub" />
+      <StageBadge value="working" />
+      <StageBadge value="settled" />
+    </p>
+    <ul class="handbook-sections">
+      {
+        HANDBOOK_SECTIONS.map((section) => (
+          <li>
+            <a href={section.href}>
+              <span class="section-label">{section.label}</span>
+              <span class="section-blurb">{section.blurb}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
   {
-    posts.length > 0 && (
-      <Section title="Recent posts" moreLink="/blog" moreLabel="All posts">
-        <p class="page-lede">
-          Field reports — what actually broke, what it cost, and what changed as
-          a result.
-        </p>
-        <div class="post-list">
-          {posts.map((post) => (
-            <PostCard post={post} />
+    updates.length > 0 && (
+      <Section title="Now" moreLink="/now">
+        <ul class="update-list">
+          {updates.map((update) => (
+            <li>
+              <FormattedDate date={update.data.date} format="short" />
+              <span>{update.data.summary}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       </Section>
     )
   }
@@ -88,16 +156,13 @@ const projects =
   }
 
   {
-    updates.length > 0 && (
-      <Section title="Now" moreLink="/now">
-        <ul class="update-list">
-          {updates.map((update) => (
-            <li>
-              <FormattedDate date={update.data.date} format="short" />
-              <span>{update.data.summary}</span>
-            </li>
+    posts.length > 0 && (
+      <Section title="Recent posts" moreLink="/blog">
+        <div class="post-list">
+          {posts.map((post) => (
+            <PostCard post={post} />
           ))}
-        </ul>
+        </div>
       </Section>
     )
   }
@@ -157,6 +222,70 @@ const projects =
 
   .profile-links a:hover {
     color: var(--primary);
+  }
+
+  .handbook-lede {
+    max-inline-size: var(--measure);
+    margin: 0;
+    color: var(--prose-foreground);
+    text-wrap: pretty;
+  }
+
+  .stage-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    max-inline-size: var(--measure);
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: var(--step--1);
+  }
+
+  .handbook-sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xs);
+    padding: 0;
+    margin-block-start: var(--space-2xs);
+    list-style: none;
+  }
+
+  @media (width >= 52rem) {
+    .handbook-sections {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .handbook-sections a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    height: 100%;
+    padding: var(--space-2xs) var(--space-xs);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition:
+      border-color var(--motion-duration-fast) var(--motion-ease),
+      background-color var(--motion-duration-fast) var(--motion-ease);
+  }
+
+  .handbook-sections a:hover {
+    border-color: var(--interactive-border);
+    background: var(--interactive-background);
+  }
+
+  .section-label {
+    color: var(--foreground);
+    font-size: var(--step-0);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .section-blurb {
+    color: var(--muted-foreground);
+    font-size: var(--step--1);
+    text-wrap: pretty;
   }
 
   .update-list {
