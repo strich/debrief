@@ -2,6 +2,7 @@
 title: "How to Improve the Performance of Unity3D Animations"
 pubDate: 2015-09-21T21:08:32Z
 originalPath: "/how-to-improve-the-performance-of-unity3d-animations/"
+tags: [unity, graphics, performance]
 draft: false
 ---
 In our game [War for the Overworld](http://www.wftogame.com) we make pretty heavy use of animations with users being able to potentially see 25-100 units on screen at once. This means that the Animation Renderer takes up a considerable part of our frame time, and as such any tuning there can create a noticeable performance improvement. Recently I decided to take another look and found what I think is a lesser known Unity feature - *Optimize Transform Hierarchy*. Using this feature reduced our Animation Renderer overhead by **50%**!

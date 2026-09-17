@@ -2,6 +2,7 @@
 title: "Using Git with 3D Games"
 pubDate: 2013-11-06T11:21:56Z
 originalPath: "/using-git-with-3d-games/"
+tags: [git, unity]
 draft: false
 ---
 Git can work fine with 3D Games out of the box. However the main caveat here is that versioning large (>5MB) media files can be a problem over the long term as your commit history bloats. We have solved this potential issue in our projects by only versioning the binary asset when it is considered final. Our 3D artists use Dropbox to work on WIP assets, both for the reason above and because its **much** faster and simpler (Not many artists will actively want to use Git!).

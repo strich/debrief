@@ -2,6 +2,7 @@
 title: "Using 'git sync' to automate common Git commands"
 pubDate: 2018-03-16T05:13:29Z
 originalPath: "/using-git-sync-to-automate-common-git-commands/"
+tags: [git, tooling]
 draft: false
 ---
 At Brightrock Games about 5 of us actively use Git hourly to commit and pull work all day from the same branch. Doing this often means that every time you want to do a git pull or push, there are several manual steps you have to take to stash any outstanding changes you haven't yet got around to committing (Or any unnecessary trash Unity makes) so you can then pull rebase if there is something upstream then finally push. Its an annoyance that wastes a few minutes every few hours.

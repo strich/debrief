@@ -2,6 +2,7 @@
 title: "Creating a cutout shader for doors and windows"
 pubDate: 2016-08-10T00:26:38Z
 originalPath: "/creating-a-cutout-shader-for-doors-and-windows/"
+tags: [unity, graphics]
 draft: false
 ---
 For the game I'm currently working on is a 3D isometric management game where you build rooms on a spacestation. The rooms and spacestation are made up of a series of tilesets so the player can effectively paint out the rooms in any size and shape they wish and the wall tiles are snapped together and appropriately themed based on the room type. All relatively easy stuff at this point. However we also allow the player to place doors and windows, and these objects may be multiple tiles wide. The first solution that came to us was seeing whether we could complexify the tileset system a little to support sub-tilesets that are made up of chucked up doors and windows. After some quick math this didn't look good - The tileset requirements and combinations were quickly exploding into really big numbers. This could have been possibly mitigated by cutting up the tiles even further and then having some automated tileset builder step that constructs the combinations required. But that sounded no good. There must be another way!

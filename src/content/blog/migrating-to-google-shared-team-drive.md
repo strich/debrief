@@ -2,6 +2,7 @@
 title: "Migrating to Google Shared/Team Drive"
 pubDate: 2019-07-31T20:24:29Z
 originalPath: "/migrating-to-google-shared-team-drive/"
+tags: [infrastructure, studio]
 draft: false
 ---
 We recently needed to move about 500GB of data over 5 years from a ton of people we no longer work with into a Shared Drive as part of our Gsuite. This move is intended to give us more full control over ownership and management of files.

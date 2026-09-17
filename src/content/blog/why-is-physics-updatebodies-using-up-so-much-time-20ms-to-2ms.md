@@ -2,6 +2,7 @@
 title: "Why is Physics.UpdateBodies using up so much time? 20ms to 2ms"
 pubDate: 2016-07-02T03:54:05Z
 originalPath: "/why-is-physics-updatebodies-using-up-so-much-time-20ms-to-2ms/"
+tags: [unity, performance]
 draft: false
 ---
 As part of performing some initial prototyping and load testing for our next game we had to determine how to implement the physics system. For our game we required a dynamic world and the ability to simulate 100-500 agents. That kind of target is right on the edge of needing to write a bespoke system so as to take every advantage one can to meet a 60 FPS minimum. We're long-time Unity3D devs and were quite wary of its implementation of PhysX, but we had to try it anyway - The tooling and maintenance bonuses of using it would be of great value let alone not having to write our own implementation.

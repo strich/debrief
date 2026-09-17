@@ -2,6 +2,7 @@
 title: "Edit and Apply registry settings via PowerShell"
 pubDate: 2014-03-04T12:11:02Z
 originalPath: "/edit-and-apply-registry-settings-via-powershell/"
+tags: [tooling]
 draft: false
 ---
 The video game Diablo 3 is a great game, however due to its extremely vibrant and chaotic particle effects during fights it can become very difficult to see the mouse cursor.

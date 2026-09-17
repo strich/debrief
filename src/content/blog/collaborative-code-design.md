@@ -2,6 +2,7 @@
 title: "Collaborative Code Design"
 pubDate: 2013-07-02T14:46:00Z
 originalPath: "/collaborative-code-design/"
+tags: [studio, tooling]
 draft: false
 ---
 When working within a team of programmers I have always found that maximizing collaboration between programmers in the design phase has great benefits down the road. Even if a programmer isn't expected to work within the implementation of a specific design I find they still get great value out of knowing, at least at a high level, how each area of the codebase is meant to flow.

@@ -2,6 +2,7 @@
 title: "Important Tips on Hiring a Video Games Writer"
 pubDate: 2015-10-07T04:51:41Z
 originalPath: "/important-tips-on-hiring-a-video-games-writer/"
+tags: [studio]
 draft: false
 ---
 I'm Scott Richmond, the Producer and a programmer at Brightrock Games. I am lucky enough to have been able to go through the experience of Kickstarting and, as of April 2015, successfully releasing our game [War for the Overworld](http://www.wftogame.com). WFTO had a considerable amount of writing in it as well as voice acting, and in this article I will be taking this experience and discussing how we aim to tackle the writing department with our new game title. Just before I start, I'd like to thank [Chris Avellone](https://twitter.com/ChrisAvellone) for taking the time to discuss with me the inner world of video game writers.

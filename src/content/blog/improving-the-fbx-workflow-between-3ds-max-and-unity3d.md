@@ -2,6 +2,7 @@
 title: "Improving the FBX workflow between 3ds Max and Unity3D"
 pubDate: 2016-07-15T03:28:40Z
 originalPath: "/improving-the-fbx-workflow-between-3ds-max-and-unity3d/"
+tags: [unity, graphics, tooling]
 draft: false
 ---
 As some of our artists swear by 3ds Max we must support it and ensure the workflow between it and Unity3D is as seemless as possible. Unfortunately even though 3ds Max and among the top few 3D modelling applications there are still some serious workflow issues with it. One of the common tasks one performs - Exporting 3D models to the FBX file format - is fraught with problems:

@@ -2,6 +2,7 @@
 title: "Installing Mono3 on Ubuntu 12.04"
 pubDate: 2014-08-18T22:37:08Z
 originalPath: "/installing-mono3-on-ubuntu-12-04/"
+tags: [infrastructure]
 draft: false
 ---
 Unfortunately Ubuntu 12.04 does not have any packages for Mono3, so we must compile and build it ourselves. Below are the instructions on how to do so. This article is a slightly modified version from [Lovesmesomecode.com](http://www.lovesmesomecode.com/post/20130719-compiling-mono-3-in-ubuntu/).

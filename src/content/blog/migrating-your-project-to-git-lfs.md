@@ -2,6 +2,7 @@
 title: "Migrating your project to Git LFS"
 pubDate: 2017-09-29T20:25:42Z
 originalPath: "/migrating-your-project-to-git-lfs/"
+tags: [git]
 draft: false
 ---
 For the past 4 years we have been using Git as our repository for our game War for the Overworld. This includes 18,000+ commits totaling to a massive a 35GB repo. Its huge. So huge that our host, BitBucket, falls apart if one tries to clone the repo anew. I don't blame BitBucket for this - At some point after we joined them they added a 1GB repo size limit and have been gracious enough to not apply that restriction on us. Ultimately the problem lies with Git itself - It wasn't built to handle all the binary data we have thrown into it.

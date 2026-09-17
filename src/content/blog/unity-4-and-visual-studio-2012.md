@@ -2,6 +2,7 @@
 title: "Unity 4 and Visual Studio 2012"
 pubDate: 2013-06-23T06:20:28Z
 originalPath: "/unity-4-and-visual-studio-2012/"
+tags: [unity, tooling]
 draft: false
 ---
 Unfortunately the Unity3D developers have not yet seen fit to setup Unity Editor to work with Visual Studio 2012 and so one has to do a little work to get it setup manually. Here is how to get it working.

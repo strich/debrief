@@ -2,6 +2,7 @@
 title: "Performing a Clean Install of F5 BIG-IP software"
 pubDate: 2013-08-02T12:56:46Z
 originalPath: "/performing-a-clean-install-of-f5-big-ip-software/"
+tags: [infrastructure]
 draft: false
 ---
 I was recently tasked with replacing a dead F5 BIG-IP 1600 at our datacenter. A seemingly typical piece of work, however I ran into some huge issues in the process of doing so largely due to the replacement F5 device coming with an early version of the OS at v9.4.6 - F5 switched from a partition-based storage framework to an LVM Volume-based storage framework in the transition between v9.x and v10.x as well as quite heavily changing the OS upgrade process (For the better).

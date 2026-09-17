@@ -2,6 +2,7 @@
 title: "Using Meraki to deploy SMB networks"
 pubDate: 2014-10-10T16:22:48Z
 originalPath: "/using-meraki-to-deploy-smb-networks/"
+tags: [infrastructure]
 draft: false
 ---
 I've recently become very infatuated with the Meraki brand of routing, switching and wireless product line. Recently bought out by Cisco, Meraki products primarily rely on an extremely neat cloud-based software management service that comes with every Meraki device licence.

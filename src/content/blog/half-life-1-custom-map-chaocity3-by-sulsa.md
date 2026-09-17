@@ -2,6 +2,7 @@
 title: "Half-Life 1 Custom Map - Chaocity3 by Sulsa"
 pubDate: 2022-10-04T13:11:05Z
 originalPath: "/half-life-1-custom-map-chaocity3-by-sulsa/"
+tags: [archive]
 draft: false
 ---
 This map was an important map for me and my friends during our LAN days way back in the 2000s. It took me some time to uncover it again so I am mirroring it here.
