@@ -48,10 +48,17 @@ paid for every step. Structuring it so the stable parts stay stable is a cost
 decision as much as a quality one, which is the subject of
 [prompt cache economics](/handbook/ai-cost-discipline/prompt-cache-economics/).
 
-## What I have not solved
+## Where the gap turned out to be
 
 Cross-boundary changes, where the C# change is correct but the corresponding
 change belongs in a scene or prefab. The code half is tractable. Connecting it
-reliably to the asset half is not something I have working, and I suspect it
-needs the editor in the loop rather than better retrieval. That thread continues
-in [the Unity CLI](/handbook/unity-toolchain/the-unity-cli/).
+reliably to the asset half was not something I had working, and I suspected it
+needed the editor in the loop rather than better retrieval.
+
+That suspicion held. Retrieval was never going to reach the asset half, because
+the asset half is not text worth retrieving. It needs a resolved object graph,
+which means it needs a running editor, and what that looks like in practice is
+in
+[agents in the scene hierarchy](/handbook/ai-assisted-development/agents-in-the-scene-hierarchy/).
+The mechanism that made it available is
+[the Unity CLI](/handbook/unity-toolchain/the-unity-cli/).
