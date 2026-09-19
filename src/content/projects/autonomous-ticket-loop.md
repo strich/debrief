@@ -37,3 +37,19 @@ so a person can pick it up rather than start over.
 It runs one task at a time on purpose. Parallel working copies are expensive on
 a Unity repo, and the output of a single loop already saturates the review
 attention available.
+
+The thing that has changed most since it started is what a run can verify about
+itself. When the loop began, a run could write code and open a pull request but
+could not tell whether the game still started, so every result was a claim
+waiting for a person. With
+[the editor reachable from the command line](/handbook/unity-toolchain/the-unity-cli/)
+a run can launch, exercise the change, read the console and act on what it
+finds, which moves a whole class of failure to before the pull request exists
+rather than after.
+
+That also sharpened what blocks unattended running, and it is rarely the
+interesting part. Our game waits for focus on the game window when a scene
+loads, which for an attended session is a minor irritation and for an unattended
+one is a run that stalls silently and looks slow rather than stuck. Most of the
+work of making this thing run on its own has been finding that class of problem,
+not improving the agent.

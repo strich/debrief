@@ -41,3 +41,16 @@ It runs on pull requests, it is advisory rather than a merge gate, and it stays
 quiet most of the time. That last part is deliberate. A reviewer that comments
 on everything gets muted within a week, and the whole argument for starting here
 was that it had to be easy to ignore.
+
+Its limit is the same classification that makes it work. Splitting the diff and
+reviewing only the source means the reviewer never sees the half of a Unity
+change that lives in a scene or a prefab, so the bugs it structurally cannot
+catch are exactly the wiring ones. That half needs a resolved object graph
+rather than a diff, and it is covered separately in
+[agents in the scene hierarchy](/handbook/ai-assisted-development/agents-in-the-scene-hierarchy/).
+
+The other thing it taught me transfers beyond pull requests. A second model
+reading work it did not produce catches things the author cannot catch, because
+it has not committed to the approach. That holds just as well before the code
+exists as after it, which is why there is now a planning and review step in
+front of agent work here as well as a reviewer behind it.
