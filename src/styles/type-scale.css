@@ -26,6 +26,8 @@
   --prose-marker: var(--primary);
 
   /* Reading measure for prose. The handbook maps --sl-content-width onto this
-     so a paragraph is the same width in a post and a handbook page. */
-  --measure: 44rem;
+     so a paragraph is the same width in a post and a handbook page. 57.2rem
+     is the original 44rem opened up by 30% — wide by the usual standard, and
+     the width this site's prose was asked for. */
+  --measure: 57.2rem;
 }
