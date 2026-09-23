@@ -1,6 +1,6 @@
 ---
 title: "What I stopped understanding"
-description: "A project moved a long way with a model doing most of the debugging, and I came out the other side knowing less about it than I would have. Plus one idea for fixing that."
+description: "A stuck project moved a huge amount with DeepSeek doing most of the debugging, and I came out of it understanding the problem less than I would have. Plus an idea for fixing that."
 pubDate: 2026-09-19T11:00:00Z
 tags: [ai, studio]
 stage: seedling
@@ -10,72 +10,70 @@ draft: false
 ---
 
 A project here had been stuck for a while. Over the last few weeks it moved a
-very long way, and most of the actual work was done by a model running the loop
-I have described elsewhere. Plan, execute fast against a live editor, read the
-console, correct, repeat. It worked. The thing that was stuck is not stuck.
+huge amount, and most of the actual work was done by DeepSeek running the loop
+I've described in the handbook. Plan with a second model, run fast against a
+live editor, read the console, fix, repeat. It worked. The thing that was stuck
+isn't stuck anymore.
 
-I am pleased about the outcome and uneasy about something else, and the uneasy
-part is worth writing down while it is still fresh enough to be honest about.
+I'm really happy with how it turned out. I'm also a bit uneasy about
+something, and I want to write it down while it's fresh enough to be honest
+about.
 
-## I could not now explain it
+## I couldn't explain it now
 
-If someone sat me down and asked me to walk through why that system behaves the
-way it does, I would do a noticeably worse job than if I had done the work by
-hand. I know what was changed. I reviewed it. I could find it again. But the
-shape of the problem space, the thing you only get from being stuck in it
-yourself for two days, is not there. I skipped that part, and skipping it was
-the point.
+If someone sat me down and asked me to walk them through why that system
+behaves the way it does, I'd do a noticeably worse job than if I'd done the
+work by hand. I know what changed. I reviewed it. I could find it again. But the
+feel for the problem, the stuff you only get from being stuck in it yourself
+for two days, just isn't there. I skipped that part. Skipping it was kind of the
+point.
 
-There is a page in the handbook about
-[what happens to a junior developer who stops reading closely](/handbook/people-and-practice/code-ownership-when-agents-write-code/),
-and the uncomfortable thing is that I wrote it about someone else. The
-mechanism does not care about seniority. It is a straightforward consequence of
-the tool being good and the incentive pointing one way. Every step where I
-could have gone deeper was a step I could also have skipped, and skipping it
-was always correct in the moment.
+There's a handbook page on
+[what happens to a junior who stops reading closely](/handbook/people-and-practice/code-ownership-when-agents-write-code/),
+and the uncomfortable bit is that I wrote it about someone else. Turns out
+being senior doesn't protect you at all. The tool is good and every incentive
+points the same way. Every time I could have gone deeper I could also have
+skipped it, and skipping was always the right call in the moment.
 
-I am not sure it was correct across the whole project. That is the part I
-cannot yet evaluate, because the cost of not understanding something does not
-arrive until you need to understand it.
+I'm less sure it was the right call across the whole project. I can't judge
+that yet, because not understanding something costs you nothing until the day
+you need to understand it.
 
-## The thing I actually want
+## What I actually want
 
-Not a policy. I do not think "read everything carefully" survives contact with
-a system that is producing correct work faster than you can read it, and
-pretending otherwise just means I would break my own rule and feel bad about
-it.
+A rule won't do it. "Read everything carefully" doesn't survive a system that's
+producing correct work faster than I can read it. I'd just break my own rule
+and feel bad about it.
 
-What I want is narration. Specifically, I want to be able to sidecar a second
-model into the session whose entire job is to talk to me about what is going
-on. Not to review the work and not to intervene. To say, out loud, that the
-agent has just decided the problem is in the spawn path rather than the pooling
-code and here is why, and would I like it to go further into that.
+What I want is narration. I'd love to be able to sidecar a second LLM into my
+OpenCode sessions whose whole job is to talk to me about what's going on. It
+wouldn't review the work or step in. It'd just tell me, out loud, that the agent
+has decided the problem is in the spawn code rather than the pooling code, and
+here's why, do I want to dig into that?
 
-Voice, ideally, because the reason I am not following closely is that I am
-doing something else with my eyes. A running commentary I can half listen to
-and then lean into when something sounds interesting is a completely different
-proposition from a transcript I could scroll back through and will not.
+Voice ideally, because the reason I'm not following closely is usually that my
+eyes are on something else. A running commentary I can half listen to, and
+lean into when something sounds interesting, is really different from a
+transcript I *could* scroll back through and won't.
 
-And it should be on demand. The value of the loop is that it does not need me.
-A narrator that requires my attention has given the whole thing back. What I
-want is the option to be involved, taken up when the topic is one I care about
-knowing deeply, and declined the rest of the time without guilt.
+And it has to be on demand. The whole value of the loop is that it doesn't need
+me. A narrator that demands my attention gives all of that back. I want the
+option to get involved when it's something I care about knowing deeply, and to
+ignore it the rest of the time without feeling guilty.
 
-## Why this might be the right shape
+## Why I think it might work
 
-Because it separates two things that have been fused together, which is doing
-the work and understanding the work. The old assumption was that the only way
-to get the second was to do the first. That assumption was always a bit
-convenient, and it is now clearly not true, because plenty of the understanding
-came from being told things by the model rather than from deriving them.
+It pulls apart two things that have always been stuck together, doing the work
+and understanding the work. The old assumption was that the only way to get the
+second was to do the first. I'm not sure that was ever entirely true, and it
+definitely isn't now. Plenty of what I do understand about that project came
+from the model telling me things.
 
-If understanding can be delivered separately from execution, then the
-interesting design question is not whether to let an agent do the work. It is
-what the understanding channel should look like, and at the moment there is not
-much of one.
+If understanding can come separately from doing, then the interesting design
+question is what that understanding channel looks like. Right now there
+basically isn't one.
 
-I have not built this. It is an idea with an obvious first version, which is a
-second session subscribed to the first one's output with instructions to
-summarise decisions rather than actions, piped into something that speaks. If I
-build it I will write up whether it survives a week of actual use, which is the
-part where most ideas of this kind quietly stop.
+I haven't built it. The obvious first version is a second session subscribed to
+the first one's output, told to summarise decisions rather than actions, piped
+into something that talks. If I do build it I'll write up whether it survives a
+week of real use, which is usually where ideas like this quietly die.
