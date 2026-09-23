@@ -3,8 +3,8 @@ title: "Agents in the scene hierarchy"
 status: working
 ---
 
-This is the most valuable thing I've found so far, and hardly anyone seems to
-talk about it.
+This is the most valuable thing I've found so far. It's a personal claim on a
+personal site, which is the only standing it needs.
 
 Give a model a live editor to talk to and it's extremely good at inspecting
 prefabs and the running scene hierarchy, and at finding what's wrong in them. I
