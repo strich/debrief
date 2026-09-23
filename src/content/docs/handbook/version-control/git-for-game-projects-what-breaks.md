@@ -3,61 +3,62 @@ title: "Git for game projects: what breaks"
 status: settled
 ---
 
-Git works fine on a game project right up until it does not, and the failure is
-gradual enough that you tend to notice it about two years too late. This is the
-oldest thread in the handbook. I first wrote about it in 2013 and every problem
-described here is still live.
+Git works fine on a game project right up until it doesn't, and it goes
+downhill slowly enough that you tend to notice about two years too late. This
+is the oldest thread in the handbook. I first wrote about it in 2013 and every
+problem on this page is still live.
 
-## The shape of the problem
+## Why games are different
 
 Git was built for source code. It assumes files are text, that diffs are small
-and meaningful, and that history compresses well. A game repository violates all
-three. Most of its volume by byte is art, audio and serialised scene data. None
-of it diffs. None of it compresses much, because it is usually compressed
-already.
+and mean something, and that history compresses well. A game repo breaks all of
+that. Most of it by size is art, audio and serialised scene data. None of that
+diffs, and hardly any of it compresses because it's usually compressed already.
 
-The result is that repository size grows roughly linearly with the number of
-times anyone touches a binary file, and it never comes back down. Every revision
-of a texture is stored in full, forever.
+So repo size grows roughly in line with how often anyone touches a binary file,
+and it never comes back down. Every revision of every texture is stored in
+full, forever.
 
 ## What breaks first
 
-**Clone time.** The first symptom, and the one that gets reported as "the repo
-is slow". A new starter waiting most of a day for a checkout is a real cost.
+**Clone time.** Usually the first symptom, and it gets reported as "the repo is
+slow". A new starter waiting most of a day for a checkout is a real cost.
 
-**Memory on Windows.** For a long stretch the Windows Git build was 32-bit, and
-a large repacking operation would simply run out of address space. Raising the
-pack limits so Git stops trying to hold a giant pack in memory at once was the
-fix that kept things moving. I wrote that up in
+**Memory on Windows.** For a long time there was no 64-bit Git for Windows, and
+heavy operations like `git gc` would just run out of memory and crash. Raising
+the pack limits so Git stopped trying to hold one giant pack in memory is what
+kept us going. That's written up in
 [Tuning Git for large binary repositories](/blog/tuning-git-for-large-binary-repositories).
 
-**Hosting limits.** Providers have soft limits they do not advertise loudly. We
-reached a point where our host could no longer reliably serve a fresh clone of
-our own repository, which is the moment the problem stops being an annoyance and
-starts being an outage.
+**Hosting limits.** Hosts have soft limits they don't advertise very loudly. Our
+old repo got to 35GB over 18,000+ commits, and Bitbucket (who to be fair had
+never applied their 1GB repo limit to us) fell over whenever anyone tried a
+fresh clone. That's the point where it stops being annoying and becomes an
+outage.
 
-**Merging.** Two artists touching the same scene produces a conflict Git cannot
-help you with. See [Unity serialization](/handbook/version-control/unity-serialization/)
-for why, and for the partial fixes.
+**Merging.** Two artists touching the same scene gives you a conflict Git can't
+help with. [Unity serialization](/handbook/version-control/unity-serialization/)
+covers why, and the partial fixes.
 
 ## What actually helps
 
-Version the source of truth, not the derived output. If a texture can be
-regenerated from a master file, the master belongs in the repository and the
-output does not.
+Version the source of truth and leave the derived output out. If a texture can
+be regenerated from a master file, the master goes in the repo and the export
+doesn't.
 
 Move binaries to [LFS](/handbook/version-control/git-lfs-in-practice/) before
-you need to, not after. Migrating a clean repository is a morning. Migrating
-eighteen thousand commits of accumulated history is a project.
+you need to. Migrating a clean repo is a morning. Migrating 18,000 commits of
+history took me days of running and re-running a migration tool, plus GitHub
+support relaxing two of their limits for us.
 
-Decide the branching model early and keep it boring. Most version control pain
-on a game team is not conceptual, it is repetitive, and repetitive friction is
-what people quietly stop doing.
+Pick a branching model early and keep it boring. Most version control pain on a
+game team is dull and repetitive, and repetitive friction is exactly the stuff
+people quietly stop doing.
 
 ## Why this matters for agents
 
 This is the direct ancestor of the problem in
 [Autonomous agents on a large Unity codebase](/handbook/ai-assisted-development/autonomous-agents-large-unity-codebase/).
 Every technique for running several agents at once assumes checkouts are cheap.
-On a game repository they are not, and that single fact reshapes the whole
+On a game repo they're very much not, and that one fact changes the whole
 approach.

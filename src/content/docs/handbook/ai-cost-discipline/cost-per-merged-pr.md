@@ -3,52 +3,51 @@ title: "Cost per merged PR"
 status: researching
 ---
 
-Most reporting on AI tooling spend measures the wrong thing. Tokens consumed,
-spend per developer per month, requests served. All easy to collect and none of
-them answer the only question a studio actually has, which is whether this is
-worth what it costs.
+Most reporting on AI tooling spend measures the wrong thing. Tokens used, spend
+per developer per month, requests served. They're all easy to collect and none
+of them answer the question a studio actually has, which is whether it's worth
+the money.
 
-The measure I am building toward is cost per merged pull request. Not per
-attempt, per merge. Work that was abandoned, reverted or rewritten by a person
-still consumed budget, and a metric that ignores that will make a tool look good
-precisely when it is performing worst.
+The measure I'm working toward is cost per merged pull request. Per merge, not
+per attempt. Work that got abandoned, reverted or rewritten by a person still
+used up budget, and a metric that ignores that makes a tool look good exactly
+when it's doing worst.
 
-## Why this framing
+## Why this measure
 
-It is comparable to something. A merged pull request is a unit the team already
-understands and already produces without AI involvement, so the number can be
-argued about honestly rather than admired in isolation.
+It compares to something. A merged pull request is a unit the team already
+understands and already produces without AI, so the number can be argued about
+properly instead of just admired.
 
-It punishes the failure modes that matter. An agent that produces plausible work
-requiring heavy rework looks efficient by token count and terrible by this
-measure, which is the correct ranking.
+It punishes the failures that matter. An agent that turns out plausible work
+needing heavy rework looks efficient by token count and terrible by this
+measure, which I think is the right way round.
 
-It forces attribution. Deciding whether a given merge counts as agent work means
-deciding what counts as assistance, and that turns out to be the genuinely hard
-part.
+And it forces the attribution question. Deciding whether a merge counts as agent
+work means deciding what counts as help, and that turns out to be the hard part.
 
-## The problems I have not solved
+## What I haven't solved
 
-**Attribution.** A pull request an agent opened and a person substantially
-rewrote is not clean. Neither is one a person wrote after an agent found the
-cause. Any rule here is somewhat arbitrary and the number is sensitive to which
-one you pick.
+**Attribution.** A pull request an agent opened and a person then substantially
+rewrote isn't clean. Neither is one a person wrote after an agent found the
+cause. Any rule here is a bit arbitrary, and the number moves a lot depending on
+which rule you pick.
 
-**Review time is a real cost and is not billed.** The argument in
+**Review time costs money and nobody bills it.** The argument in
 [autonomous agents on a large Unity codebase](/handbook/ai-assisted-development/autonomous-agents-large-unity-codebase/)
-is that human attention is the binding constraint. If that is true then a metric
-counting only API spend is measuring the cheaper half of the problem. Costing
-review time properly is what I most want to get right and least know how to.
+is that human attention is the real constraint. If that's true, a metric that
+only counts API spend is measuring the cheaper half of the problem. Costing
+review time properly is what I most want to get right and least know how to do.
 
-**Selection bias.** Agents get pointed at tractable work, because that is
-rational. Comparing cost per merge against team-wide averages therefore compares
-easy tickets to all tickets, and flatters the tooling.
+**Selection bias.** Agents get pointed at the tractable work, because that's the
+sensible thing to do. So comparing cost per merge against team averages compares
+easy tickets with all tickets, and flatters the tooling.
 
-## Where I am
+## Where I'm at
 
-Instrumented enough to attribute spend to a session and a session to a ticket,
-which is the foundation. The attribution rules are still moving and I do not
-want to publish a number that a later definition change would invalidate.
+Instrumented enough to tie spend to a session and a session to a ticket, which
+is the foundation. The attribution rules are still moving, and I don't want to
+publish a number that a later change in definition would make meaningless.
 
-When there is a figure I trust it will go here, with the definition it was
-measured under stated plainly enough to disagree with.
+When there's a figure I trust it'll go here, with the definition it was measured
+under spelled out clearly enough that you can disagree with it.

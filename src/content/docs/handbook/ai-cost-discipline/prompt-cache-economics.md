@@ -3,60 +3,65 @@ title: "Prompt cache economics"
 status: working
 ---
 
-The thing that surprises people about the bill is which part of it is large.
-The intuition is that you pay for the code the model writes. In practice, on a
-long agent session against a big repository, output is often a small share of
-the total and the dominant cost is re-reading context you already sent.
+What surprises people about the bill is which part of it is big. You'd think you
+pay for the code the model writes. On a long agent session against a big repo,
+output is often a small slice and the main cost is re-reading context you
+already sent.
 
-## How the mechanism works
+## How it works
 
 Every step of an agent loop resends the conversation so far. The system prompt,
-the tool definitions, the files already read, the output of every previous
-command. Step twenty carries everything from steps one through nineteen.
+the tool definitions, every file already read, the output of every previous
+command. Step twenty carries everything from steps one to nineteen.
 
 Prompt caching exists because of this. Send the same prefix again and the
-provider can reuse its computed form rather than processing it fresh, at a
-substantially reduced rate. There is usually a write cost the first time and a
-much cheaper read cost afterwards, with the cached entry expiring after some
-idle period.
+provider can reuse the work it already did on it instead of processing it fresh,
+at a much lower rate. There's usually a write cost the first time and a much
+cheaper read cost after that, and the cached entry expires once it's been idle
+for a while.
 
-The economics that follow are not obvious.
+What follows from that isn't obvious.
 
-**Cache reads are cheap per token and enormous in aggregate.** A discounted rate
-applied to a large context on every one of fifty steps still adds up to real
-money, and it accumulates quietly because no individual step looks expensive.
+**Cache reads are cheap per token and huge in total.** A discounted rate on a
+large context, every one of fifty steps, still adds up to real money. It builds
+up quietly because no single step looks expensive.
 
-**A stable prefix is worth more than a short one.** Anything that changes early
-in the context invalidates everything after it. A timestamp near the top of a
-system prompt can cost more than several thousand tokens placed further down,
-because it destroys the cache on every single call.
+**A stable prefix beats a short one.** Anything that changes early in the context
+invalidates everything after it. A timestamp near the top of a system prompt can
+cost more than thousands of tokens further down, because it wipes the cache on
+every call.
 
-**Ordering is a cost decision.** Stable content first, volatile content last. If
-the files an agent has read are appended after the parts that change each turn,
-you pay full price to re-read them every step.
+**Order is a cost decision.** Stable stuff first, changing stuff last. If the
+files an agent has read get appended after the bits that change each turn, you
+pay full price to re-read them every step.
 
-**Idle time is billable indirectly.** A loop that pauses long enough for the
-cache to expire pays the write cost again when it resumes. Which means a
-scheduling decision, like the one in
-[quota-gated agent loops](/handbook/ai-assisted-development/quota-gated-agent-loops/),
+**Idle time costs you indirectly.** A loop that pauses long enough for the cache
+to expire pays the write cost again when it starts back up. So a scheduling
+decision like the one in
+[quota-gated agent loops](/handbook/ai-assisted-development/quota-gated-agent-loops/)
 is also a caching decision.
 
-## What this changes in practice
+## What this changes
 
-The instinct when a bill is high is to move to a cheaper model. Often the better
-move is to look at what is being resent and how often, because a badly ordered
+When the bill's high the instinct is to switch to a cheaper model. Often the
+better move is to look at what's being resent and how often. A badly ordered
 context on a cheap model can cost more than a well ordered one on an expensive
 model.
 
-It also reframes context selection. The work in
+It also changes how I think about context selection. The stuff in
 [context for a Unity repo](/handbook/ai-assisted-development/context-for-a-unity-repo/)
-is usually discussed as a quality problem. It is equally a cost problem. Every
-file handed to an agent is paid for on every subsequent step of that session,
-not once.
+usually gets talked about as a quality problem. It's just as much a cost
+problem, because every file you hand an agent gets paid for on every later step
+of that session.
 
-## What is not here yet
+It's part of why I prune long sessions by forking back past finished work (see
+[running a long agent session](/handbook/ai-assisted-development/running-a-long-agent-session/)).
+Partly that keeps the model focused, and partly it stops me paying to re-read a
+solved problem on every turn.
 
-Our own numbers. I have the instrumentation running and I would rather publish a
-measured breakdown from this codebase than repeat general figures. When there is
-a clean sample I will put the split here, alongside
+## What's not here yet
+
+Our own numbers. The instrumentation's running and I'd rather publish a measured
+breakdown from our codebase than repeat general figures. When there's a clean
+sample I'll put the split here next to
 [cost per merged PR](/handbook/ai-cost-discipline/cost-per-merged-pr/).

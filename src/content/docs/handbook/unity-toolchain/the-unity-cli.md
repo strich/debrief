@@ -3,87 +3,78 @@ title: "The Unity CLI"
 status: working
 ---
 
-Driving the editor from outside has always been possible through
+Driving the Unity editor from outside has always been possible with
 [batchmode](/handbook/unity-toolchain/headless-builds-and-batchmode/), but
-batchmode is a blunt instrument. It starts an editor, runs one method, and
-exits. For a build that is exactly right. For a tool that wants to ask the
-editor a question and act on the answer, it is the wrong shape entirely.
+batchmode is pretty blunt. It starts an editor, runs one method and exits. For a
+build that's exactly right. For a tool that wants to ask the editor a question
+and do something with the answer, it's the wrong shape.
 
-A first-class command line interface to a running editor changes that, and it
-is the piece that has been missing for agent work. This page sat at researching
-for a while because I was partway through evaluating it. It is now working,
-because the question I most wanted answered has an answer, and the answer is
-better than I expected.
+A proper command line interface to a running editor fixes that, and it's the
+piece that's been missing for agent work. This page sat at researching for a
+while as I tried it against a real project. It's at working now because the
+question I cared about most has an answer, and it's a better answer than I
+expected.
 
-## The loop closes
+## It closes the loop
 
-What matters is not any single capability. It is that three of them compose.
+An agent can start the editor. It can run tests or enter play mode. And it can
+read what came out in the console. Any one of those is a nice convenience. Put
+together, the agent can make a change, see what actually happened, and fix its
+own mistakes without me in the middle.
 
-An agent can start the editor. It can run a test or enter play mode. It can
-read what the console produced. Each of those alone is a convenience. Together
-they are a closed loop, which means an agent can make a change, observe the
-actual consequence of that change, and correct itself with nobody in the
-middle.
+That's the big one. Before this, an agent on a Unity project was writing code it
+couldn't run, so every check was a human check. Now it launches, tests, reads
+the console and goes again, and I review the end result instead of every
+attempt.
 
-That is the entire difference. Before this, an agent working on a Unity project
-was writing code it could not run, which reduces it to a very well read
-colleague who has never seen the game start. Every verification step was a
-human step. With the loop closed the agent fixes its own mistakes, and a person
-reviews the result instead of each attempt.
-
-It also moves the bottleneck. The constraint on this work was never compute, it
-was how much agent output a person can actually read, which is the argument in
+The real limit on this kind of work has been how much agent output a person can
+read, which is the argument in
 [autonomous agents on a large Unity codebase](/handbook/ai-assisted-development/autonomous-agents-large-unity-codebase/).
-Self-correction attacks that directly, because the attempts that used to land
-on a reviewer now get resolved before the reviewer sees anything.
+Self-correction helps with that directly, because the attempts that used to end
+up with me get sorted out before I see anything.
 
-## What it changed about model choice
+## It changed how I pick a model
 
-Once the editor is in the loop, a session is dominated by round trips rather
-than by reasoning. Ask, act, read the console, adjust. In that regime the
-response latency of the model stops being a comfort preference and becomes a
-capability, because it sets how many corrections fit in a working session. That
-turned out to be the single biggest practical change to how I pick a model, and
-it is written up in
+With the editor in the loop, most of a session is round trips. Ask, act, read
+the console, adjust. So model speed suddenly matters a lot, because it decides
+how many goes you get in an afternoon. That ended up being the biggest change
+to how I choose a model, and it's in
 [running a long agent session](/handbook/ai-assisted-development/running-a-long-agent-session/).
 
 ## The bigger surprise
 
-I expected the value here to be builds and tests. The more valuable thing has
-been that a model with a live editor to talk to is genuinely good at inspecting
-prefabs and the running scene hierarchy, which is the half of a Unity project
-that source-level tooling cannot reach. That has its own page in
-[agents in the scene hierarchy](/handbook/ai-assisted-development/agents-in-the-scene-hierarchy/).
+I expected the value to be builds and tests. The thing that's turned out way
+more valuable is that a model with a live editor is really good at poking around
+prefabs and the running scene hierarchy. Source-level tooling can't reach that
+half of a Unity project at all, and it's got its own page:
+[Agents in the scene hierarchy](/handbook/ai-assisted-development/agents-in-the-scene-hierarchy/).
 
-## The gap I have hit
+## Window focus
 
-Window focus. Our game waits for focus on the game window when it loads a
-scene, so an unattended run can sit there waiting for a click that is never
-coming, having reported nothing wrong. It is the most annoying class of failure
-available, because it looks exactly like a slow step.
+Our game waits for focus on the game window when it loads a scene. So an
+unattended run can just sit there waiting for a click that's never coming,
+without reporting anything wrong. It's about the most annoying kind of failure
+there is, because it looks exactly like a slow step.
 
-The fix is an instruction to the agent to bring the game window forward, not a
-change to the game. The focus behaviour is there for a reason that has nothing
-to do with tooling, and bending the product to suit the harness is the wrong
-way round.
+The fix is an instruction telling the agent to bring the game window forward. I
+don't want to change the game for this. The focus behaviour is there for reasons
+that have nothing to do with tooling, and bending the product to suit the
+harness is backwards.
 
-The general lesson is worth more than the specific fix. The default skills and
-instructions shipped for Unity agent work assume a project that does nothing
-unusual, and every real project does something unusual. Expect to write
-project-specific instructions covering whatever yours does, and expect to find
-out what those are by watching a run stall.
+More generally, the default Unity skills and instructions that ship for agent
+work assume a project that doesn't do anything unusual. Every real project does
+something unusual. Expect to write your own project-specific instructions, and
+expect to find out what goes in them by watching runs stall.
 
 ## Still open
 
-**Per-call latency at real repository scale.** Small sample projects prove
-nothing here. The number that matters is what a call costs against a project
-with a fully populated `Library`, and I have not measured it in a way I would
-publish.
+**Per-call latency at real repo scale.** Sample projects prove nothing. What
+matters is what a call costs against a project with a fully populated
+`Library`, and I haven't measured that properly yet.
 
-**Behaviour across a domain reload.** Recompiling scripts tears down and
-recreates the managed domain, and how gracefully that is handled decides
-whether a long session is viable or whether every script change means starting
-over.
+**Domain reloads.** Recompiling scripts tears down and rebuilds the managed
+domain. How well that's handled decides whether a long session is viable or
+every script change means starting over.
 
-**How failure is reported.** Structured errors an agent can branch on, or log
-output it has to parse. So far it is more parsing than I would like.
+**How failures get reported.** Structured errors an agent can act on, or log
+output it has to parse? So far it's more parsing than I'd like.

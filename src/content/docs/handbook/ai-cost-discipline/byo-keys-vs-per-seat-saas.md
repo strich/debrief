@@ -3,56 +3,55 @@ title: "BYO keys vs per-seat SaaS"
 status: researching
 ---
 
-Two ways to buy AI coding tooling. Pay a vendor per developer per month and use
-whatever they have wired up, or bring your own API keys and pay for what you
-actually consume.
+There are two ways to buy AI coding tools. Pay a vendor per developer per month
+and use whatever they've wired up, or bring your own API keys and pay for what
+you actually use.
 
-For a small studio the difference is larger than it looks, and it is not simply
-about which is cheaper.
+For a small studio the difference is bigger than it looks, and price is only
+part of it.
 
-## Why per-seat pricing fits badly here
+## Why per-seat fits badly here
 
-Per-seat assumes usage is roughly uniform across the team. On a studio where
-part of the code team is actively sceptical of the tooling, which is the
-situation described in
-[adopting AI tooling with sceptical engineers](/handbook/people-and-practice/adopting-ai-tooling-with-sceptical-engineers/),
-it is not. A handful of people use it constantly and others not at all.
+Per-seat pricing assumes everyone uses it about the same amount. On a team where
+part of the code team is openly sceptical of the tooling (see
+[adopting AI tooling with sceptical engineers](/handbook/people-and-practice/adopting-ai-tooling-with-sceptical-engineers/))
+that's just not true. A few people use it constantly and others not at all.
 
-That produces a bad dynamic. Seats for people who do not want them are waste,
-and the natural response is to buy fewer seats and ration them, which turns an
-optional tool into a scarce resource people have to justify asking for. That is
-the fastest way to kill adoption of something whose whole advantage was being
+That creates a bad dynamic. Seats for people who don't want them are waste, so
+the natural move is to buy fewer and ration them. Now an optional tool is a
+scarce resource people have to justify asking for, and that's the fastest way I
+can think of to kill adoption of something whose whole advantage was being
 optional.
 
 Per-seat also caps the thing I most want to do. An
-[automated loop](/handbook/ai-assisted-development/quota-gated-agent-loops/) is
-not a person and does not map onto a seat at all.
+[automated loop](/handbook/ai-assisted-development/quota-gated-agent-loops/)
+isn't a person and doesn't map to a seat at all.
 
-## What BYO keys changes
+## What bringing your own keys changes
 
-You pay for consumption, so the sceptics cost nothing and the loop is just
+You pay for what's used, so the sceptics cost nothing and the loop is just
 another consumer. Routing decisions become yours, which is what makes
-[model routing](/handbook/ai-cost-discipline/model-routing/) possible at all.
-Attribution becomes possible, which is what
+[model routing](/handbook/ai-cost-discipline/model-routing/) possible. And you
+can attribute spend, which
 [cost per merged PR](/handbook/ai-cost-discipline/cost-per-merged-pr/) depends
 on.
 
-The costs are real too. You are now operating something. Key management, spend
+The downsides are real too. You're now running something. Key management, spend
 limits, rate limits, and someone on the hook when a loop misbehaves at three in
-the morning. A vendor absorbs that and there is a genuine argument that a small
-team should let them.
+the morning. A vendor soaks all that up, and there's a decent argument that a
+small team should let them.
 
-Aggregators sit in the middle, offering one key across many providers. The ones
-worth considering are those that do not mark up token pricing and make their
-money elsewhere. That is the part I want to verify against real invoices rather
-than take from a pricing page.
+Aggregators sit in the middle and give you one key across lots of providers. The
+ones worth a look are the ones that don't mark up token pricing and make their
+money some other way. I want to check that against real invoices instead of
+trusting a pricing page.
 
-## What I am waiting on
+## What I'm waiting on
 
-Enough billing history to compare honestly. The comparison is only meaningful
-once there is a real usage profile to price both ways, including the loop, and
-that profile is still changing month to month.
+Enough billing history to compare properly. It only means something once there's
+a real usage profile to price both ways, including the loop, and that profile is
+still changing month to month.
 
-My current position is that BYO keys is right for us, mostly because the
-automated work does not fit a seat model at all. I want to see that hold for a
-few months before writing it down as advice.
+Right now I think bringing our own keys is right for us, mostly because the
+automated work doesn't fit a seat model at all. I want to see that hold for a
+few months before I write it down as advice.

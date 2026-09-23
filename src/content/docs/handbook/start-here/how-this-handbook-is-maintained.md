@@ -3,43 +3,44 @@ title: "How this handbook is maintained"
 status: settled
 ---
 
-The thing that kills a handbook is not bad writing. It is staleness. A page
-that was accurate two years ago and is quietly wrong now does more damage than
-no page at all, because someone will act on it.
+Handbooks die of staleness. A page that was right two years ago and is quietly
+wrong now is worse than no page at all, because someone will act on it.
 
-Three habits keep that from happening here.
+I've got three rules to stop that happening here.
 
-## Every page carries a status
+## Every page has a status
 
-Borrowed from the way Oxide handle their RFDs, where a document's state is part
-of the document rather than something you infer from the commit log.
+I pinched this from the way Oxide handle their RFDs, where the state of a
+document is part of the document instead of something you have to work out from
+the commit log.
 
-**Researching** means I am actively working the problem and nothing has settled
-yet. The page says what I am trying to find out and what I know so far. Read it
-as a position at a point in time, not as advice.
+**Researching** means I'm still working the problem and nothing has settled
+yet. The page says what I'm trying to find out and what I know so far. Read it
+as where I was at on that date, not as advice.
 
-**Working** means there is real substance here and I am still revising it. Most
-of the handbook lives in this state, which is the honest place for it to live.
+**Working** means there's real substance and I'm still revising it. Most of the
+handbook sits here, which I think is the honest place for most of it to be.
 
-**Settled** means I have run this long enough to trust it. It will change if
-the ground changes, but not on a whim.
+**Settled** means I've run it long enough to trust it. It'll still change if
+the ground changes, just not on a whim.
 
 The badge sits under the page title. The blog uses the same three-step scale
-under different names, so the signal only has to be learned once.
+with different names (seedling, budding, evergreen) so you only have to learn it
+once.
 
-## Every page carries a last-updated date
+## Every page has a last-updated date
 
-Taken from the file's history rather than typed by hand, so it cannot drift out
-of sync with reality. If a page says it was last touched eighteen months ago,
-believe it, and weigh what it says accordingly.
+It comes from the file's git history rather than being typed in by hand, so it
+can't drift. If a page says it was last touched eighteen months ago, believe it
+and weigh it accordingly.
 
-## Only things actually in use get a page
+## Only things we actually do get a page
 
-The strongest constraint of the three. If we stop doing something, the page
-about it does not get to sit there looking authoritative. It either gets
-rewritten to describe what replaced it, or it gets removed and the reasoning
-moves to a dated post where it belongs.
+This is the strictest of the three. If we stop doing something, the page about
+it doesn't get to sit there looking authoritative. Either it gets rewritten to
+describe whatever replaced it, or it goes and the reasoning moves to a dated
+post.
 
-This is why the handbook is deliberately small and why several sections are
-still marked researching. Writing a confident page about a build farm I am
-midway through rebuilding would produce something wrong within a month.
+That's why the handbook is deliberately small, and why a bunch of it is still
+marked researching. A confident page about a build farm I'm halfway through
+rebuilding would be wrong within a month.

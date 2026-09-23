@@ -3,44 +3,44 @@ title: "Review culture"
 status: researching
 ---
 
-Code review on a small game team is a different activity from code review at a
-large company, and most published advice is written for the large company.
+Code review on a small game team is a different thing from code review at a big
+company, and most of the advice out there is written for the big company.
 
-With five people, review is not a quality gate staffed by people with slack in
-their week. It is a colleague interrupting their own work to look at yours, and
-it competes directly against shipping. The temptation to skip it when a milestone
-is close is enormous and entirely rational in the moment.
+With five people, review isn't a quality gate staffed by people with spare time.
+It's a colleague stopping their own work to look at yours, and it competes
+directly with shipping. The temptation to skip it near a milestone is huge, and
+completely rational in the moment.
 
-Adding an automated reviewer to that changes the dynamics in ways I am still
-working out, which is why this page is marked researching.
+Adding an automated reviewer changes that in ways I'm still working out, which
+is why this page is marked researching.
 
 ## What I think is true so far
 
-**The bottleneck is attention, not correctness.** This is the same conclusion as
+**Attention is the bottleneck.** Same conclusion as
 [autonomous agents on a large Unity codebase](/handbook/ai-assisted-development/autonomous-agents-large-unity-codebase/),
-arrived at from a different direction. Anything that increases the volume of
-things needing review makes the constraint worse, whoever produced them.
+from a different direction. Anything that increases the amount of stuff needing
+review makes it worse, no matter who or what produced it.
 
-**Automated review is at its best on the boring half.** Style, obvious mistakes,
-things a person would catch but resents having to. Clearing that means the human
-reviewer arrives at the parts that need judgement, which is a better use of the
-scarcest resource on the team.
+**Automated review is best at the boring half.** Style, obvious mistakes, the
+things a person would catch but resents having to. Clearing those means the
+human reviewer gets to the parts that need judgement, which is a much better use
+of the scarcest thing on the team.
 
-**It must not become a gate.** The moment a bot can block a merge it becomes
-something to argue with rather than something to read, and it inherits all the
-resentment that any mandatory process accumulates. Keeping it advisory is what
-preserves the property that made it adoptable in the first place.
+**It can't become a gate.** The moment a bot can block a merge it becomes
+something to argue with instead of something to read, and it picks up all the
+resentment any mandatory process builds up. Keeping it advisory is what made it
+adoptable in the first place.
 
-## What I do not know
+## What I don't know
 
-Whether the human review standard drifts. If a machine has already looked at a
-change, does the person look less carefully. I would expect some effect and I
-have no way to measure it, and it is the question I would most like an answer to.
+Whether the human review standard drifts. If a machine's already looked at a
+change, does the person look less carefully? I'd expect some effect, I've got no
+way to measure it, and it's the question I'd most like answered.
 
-How to review agent-authored changes well. They tend to be plausible, which is
-the specific quality that makes review hard. A change that is obviously wrong is
-easy. A change that looks right and is subtly not is the expensive case, and
-agent output skews toward it.
+How to review agent-written changes well. They tend to be plausible, and that's
+exactly what makes review hard. A change that's obviously wrong is easy. One that
+looks right and is subtly wrong is the expensive case, and agent output leans
+that way.
 
-Whether any of this holds outside a five person team. I suspect several of these
-conclusions are artefacts of the size and would invert on a larger group.
+Whether any of this holds outside a five-person team. I suspect a few of these
+conclusions only hold because we're small, and would flip on a bigger team.
